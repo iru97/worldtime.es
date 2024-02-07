@@ -1,0 +1,215 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Modern Theme (Default) */
+.theme-modern {
+  --bg-gradient-from: theme('colors.blue.50');
+  --bg-gradient-to: theme('colors.indigo.100');
+  --card-bg: theme('colors.white');
+  --card-border: theme('colors.transparent');
+  --card-shadow: theme('boxShadow.lg');
+  --input-bg: theme('colors.white');
+  --input-border: theme('colors.gray.200');
+  --accent-primary: theme('colors.indigo.600');
+  --accent-primary-light: theme('colors.indigo.400');
+  --accent-bg: theme('colors.indigo.50');
+  --accent-border: theme('colors.indigo.100');
+  --accent-text: theme('colors.indigo.600');
+  --accent-text-light: theme('colors.indigo.400');
+}
+
+.dark .theme-modern {
+  --bg-gradient-from: theme('colors.gray.900');
+  --bg-gradient-to: theme('colors.gray.800');
+  --card-bg: theme('colors.gray.800');
+  --card-border: theme('colors.transparent');
+  --card-shadow: theme('boxShadow.lg');
+  --input-bg: theme('colors.gray.700');
+  --input-border: theme('colors.gray.600');
+  --accent-primary: theme('colors.indigo.400');
+  --accent-primary-light: theme('colors.indigo.300');
+  --accent-bg: rgba(79, 70, 229, 0.1);
+  --accent-border: rgba(79, 70, 229, 0.2);
+  --accent-text: theme('colors.indigo.400');
+  --accent-text-light: theme('colors.indigo.300');
+}
+
+/* Minimal Theme */
+.theme-minimal {
+  --bg-gradient-from: theme('colors.gray.50');
+  --bg-gradient-to: theme('colors.gray.100');
+  --card-bg: theme('colors.white');
+  --card-border: theme('colors.gray.200');
+  --card-shadow: none;
+  --input-bg: theme('colors.white');
+  --input-border: theme('colors.gray.300');
+  --accent-primary: theme('colors.gray.800');
+  --accent-primary-light: theme('colors.gray.600');
+  --accent-bg: theme('colors.gray.100');
+  --accent-border: theme('colors.gray.200');
+  --accent-text: theme('colors.gray.800');
+  --accent-text-light: theme('colors.gray.600');
+}
+
+.dark .theme-minimal {
+  --bg-gradient-from: theme('colors.gray.950');
+  --bg-gradient-to: theme('colors.gray.900');
+  --card-bg: theme('colors.gray.900');
+  --card-border: theme('colors.gray.800');
+  --card-shadow: none;
+  --input-bg: theme('colors.gray.800');
+  --input-border: theme('colors.gray.700');
+  --accent-primary: theme('colors.gray.200');
+  --accent-primary-light: theme('colors.gray.400');
+  --accent-bg: theme('colors.gray.800');
+  --accent-border: theme('colors.gray.700');
+  --accent-text: theme('colors.gray.200');
+  --accent-text-light: theme('colors.gray.400');
+}
+
+/* Glassmorphic Theme */
+.theme-glassmorphic {
+  --bg-gradient-from: theme('colors.purple.400');
+  --bg-gradient-to: theme('colors.blue.500');
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --card-border: rgba(255, 255, 255, 0.3);
+  --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  --input-bg: rgba(255, 255, 255, 0.9);
+  --input-border: rgba(255, 255, 255, 0.2);
+  --accent-primary: theme('colors.purple.600');
+  --accent-primary-light: theme('colors.purple.400');
+  --accent-bg: rgba(255, 255, 255, 0.9);
+  --accent-border: rgba(255, 255, 255, 0.3);
+  --accent-text: theme('colors.purple.600');
+  --accent-text-light: theme('colors.purple.400');
+  backdrop-filter: blur(8px);
+}
+
+.dark .theme-glassmorphic {
+  --bg-gradient-from: theme('colors.purple.900');
+  --bg-gradient-to: theme('colors.blue.900');
+  --card-bg: rgba(17, 24, 39, 0.8);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --input-bg: rgba(17, 24, 39, 0.9);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --accent-primary: theme('colors.purple.400');
+  --accent-primary-light: theme('colors.purple.300');
+  --accent-bg: rgba(17, 24, 39, 0.9);
+  --accent-border: rgba(255, 255, 255, 0.1);
+  --accent-text: theme('colors.purple.400');
+  --accent-text-light: theme('colors.purple.300');
+}
+
+/* Neumorphic Theme */
+.theme-neumorphic {
+  --bg-gradient-from: theme('colors.gray.100');
+  --bg-gradient-to: theme('colors.gray.200');
+  --card-bg: theme('colors.gray.100');
+  --card-border: transparent;
+  --card-shadow: 20px 20px 60px #d1d1d1, -20px -20px 60px #ffffff;
+  --input-bg: theme('colors.gray.100');
+  --input-border: transparent;
+  --accent-primary: theme('colors.gray.700');
+  --accent-primary-light: theme('colors.gray.500');
+  --accent-bg: theme('colors.gray.100');
+  --accent-border: transparent;
+  --accent-text: theme('colors.gray.700');
+  --accent-text-light: theme('colors.gray.500');
+}
+
+.dark .theme-neumorphic {
+  --bg-gradient-from: theme('colors.gray.800');
+  --bg-gradient-to: theme('colors.gray.900');
+  --card-bg: theme('colors.gray.800');
+  --card-border: transparent;
+  --card-shadow: 20px 20px 60px #1a1a1a, -20px -20px 60px #2a2a2a;
+  --input-bg: theme('colors.gray.800');
+  --input-border: transparent;
+  --accent-primary: theme('colors.gray.300');
+  --accent-primary-light: theme('colors.gray.400');
+  --accent-bg: theme('colors.gray.800');
+  --accent-border: transparent;
+  --accent-text: theme('colors.gray.300');
+  --accent-text-light: theme('colors.gray.400');
+}
+
+/* Colorful Theme */
+.theme-colorful {
+  --bg-gradient-from: theme('colors.rose.400');
+  --bg-gradient-to: theme('colors.orange.300');
+  --card-bg: theme('colors.white');
+  --card-border: theme('colors.orange.200');
+  --card-shadow: 0 4px 6px -1px rgba(251, 146, 60, 0.1);
+  --input-bg: theme('colors.white');
+  --input-border: theme('colors.orange.300');
+  --accent-primary: theme('colors.orange.500');
+  --accent-primary-light: theme('colors.orange.400');
+  --accent-bg: theme('colors.orange.50');
+  --accent-border: theme('colors.orange.200');
+  --accent-text: theme('colors.orange.600');
+  --accent-text-light: theme('colors.orange.400');
+}
+
+.dark .theme-colorful {
+  --bg-gradient-from: theme('colors.rose.900');
+  --bg-gradient-to: theme('colors.orange.900');
+  --card-bg: theme('colors.gray.800');
+  --card-border: theme('colors.orange.800');
+  --card-shadow: 0 4px 6px -1px rgba(251, 146, 60, 0.2);
+  --input-bg: theme('colors.gray.700');
+  --input-border: theme('colors.orange.700');
+  --accent-primary: theme('colors.orange.400');
+  --accent-primary-light: theme('colors.orange.300');
+  --accent-bg: rgba(251, 146, 60, 0.1);
+  --accent-border: theme('colors.orange.800');
+  --accent-text: theme('colors.orange.400');
+  --accent-text-light: theme('colors.orange.300');
+}
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-[var(--bg-gradient-from)] to-[var(--bg-gradient-to)] min-h-screen;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-[var(--accent-primary)] text-white hover:opacity-90;
+  }
+
+  .btn-secondary {
+    @apply bg-[var(--card-bg)] text-[var(--accent-text)] border border-[var(--card-border)] hover:opacity-90;
+  }
+
+  .card {
+    @apply bg-[var(--card-bg)] border border-[var(--card-border)] shadow-[var(--card-shadow)] rounded-xl p-6;
+  }
+
+  .input {
+    @apply w-full px-4 py-2 bg-[var(--input-bg)] border border-[var(--input-border)] rounded-lg focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent;
+  }
+}
+
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
