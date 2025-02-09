@@ -1,8 +1,8 @@
-# TimeZone Hub
+# TimeWorld Management
 
 A modern web application for managing international contacts and their time zones, built with Vue 3 and Supabase.
 
-![TimeZone Hub](https://source.unsplash.com/1600x900/?time,clock)
+![TimeWorld Management](https://source.unsplash.com/1600x900/?time,clock)
 
 ## Features
 
