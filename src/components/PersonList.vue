@@ -36,14 +36,14 @@
 
         <div class="flex items-center gap-2">
           <button
-            @click="$emit('edit', person)"
+            @click="emit('edit', person)"
             class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             :title="t('person.edit')"
           >
             <Edit class="w-5 h-5" />
           </button>
           <button
-            @click="$emit('delete', person.id)"
+            @click="emit('delete', person.id)"
             class="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
             :title="t('person.delete')"
           >
@@ -68,7 +68,7 @@ const props = defineProps<{
   people: Person[];
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'edit', person: Person): void;
   (e: 'delete', id: string): void;
 }>();

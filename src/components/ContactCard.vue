@@ -7,13 +7,13 @@
       </div>
       <div class="flex gap-2">
         <button
-          @click="$emit('edit', contact)"
+          @click="emit('edit', contact)"
           class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
         >
           <Edit class="w-5 h-5" />
         </button>
         <button
-          @click="$emit('delete', contact.id)"
+          @click="emit('delete', contact.id)"
           class="text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
         >
           <Trash2 class="w-5 h-5" />
@@ -90,7 +90,7 @@ const props = defineProps<{
   contact: Contact;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'edit', contact: Contact): void;
   (e: 'delete', id: string): void;
 }>();

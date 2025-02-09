@@ -3,7 +3,7 @@
     <div class="card max-w-md w-full max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-semibold text-[var(--text-primary)]">
-          {{ contact ? 'Edit Contact' : 'Add Contact' }}
+          {{ props.contact ? 'Edit Contact' : 'Add Contact' }}
         </h2>
         <button
           @click="$emit('close')"
@@ -105,10 +105,50 @@
             type="submit"
             class="btn btn-primary"
           >
-            {{ contact ? 'Update' : 'Add' }} Contact
+            {{ props.contact ? 'Update' : 'Add' }} Contact
           </button>
         </div>
       </form>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { X } from 'lucide-vue-next';
+import type { Contact } from '@/types';
+import { TimeService } from '@/services/TimeService';
+
+const props = defineProps<{
+  contact?: Contact;
+}>();
+
+const emit = defineEmits<{
+  (e: 'close'): void;
+  (e: 'submit', contact: Partial<Contact>): void;
+}>();
+
+const timeService = new TimeService();
+const timezones = ref<string[]>([]);
+
+const form = ref({
+  name: props.contact?.name || '',
+  email: props.contact?.email || '',
+  phone: props.contact?.phone || '',
+  timezone: props.contact?.timezone || '',
+  location: props.contact?.location || '',
+  notes: props.contact?.notes || '',
+});
+
+function handleSubmit() {
+  emit('submit', {
+    ...form.value,
+    id: props.contact?.id,
+    user_id: props.contact?.user_id,
+  });
+}
+
+onMounted(() => {
+  timezones.value = timeService.getTimezones();
+});
+</script>
