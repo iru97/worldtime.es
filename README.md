@@ -1,37 +1,41 @@
-# TimeWorld Management
+# WorldTime
 
-A modern web application for managing international contacts and their time zones, built with Vue 3 and Supabase.
+A powerful web application for seamless global team coordination and time zone management. WorldTime helps you stay connected with your international contacts by providing real-time visibility of their local time, availability, and work schedules.
 
-![time-zone (1)](https://github.com/user-attachments/assets/59d3b435-eb20-4630-ae0d-376c43ee4691)
-
-<a href="https://www.flaticon.com/free-icons/world-time" title="world time icons">World time icons created by Flat Icons - Flaticon</a>
+![WorldTime](https://source.unsplash.com/1600x900/?world,time)
 
 ## Features
 
 ### For Users
 
-- **Contact Management**
-  - Add, edit, and delete contacts with their time zone information
-  - Store contact details including name, email, phone, location, and notes
-  - View contact availability status (working, sleeping, free time)
+- **Smart Contact Management**
+  - Effortlessly manage your global network with detailed contact profiles
+  - Track local times and availability status in real-time
+  - Store essential contact information including email, phone, location, and notes
+  - Intelligent availability indicators (working, sleeping, free time)
 
-- **Time Zone Visualization**
-  - Interactive timeline view showing current time for all contacts
-  - Real-time updates of contact local times
-  - Visual indicators for contact availability status
-  - Drag-and-drop timeline navigation
+- **Interactive Time Visualization**
+  - Dynamic timeline showing current times across all time zones
+  - Intuitive drag-and-drop navigation through different times
+  - Visual availability indicators for quick team coordination
+  - Real-time updates across all time zones
 
-- **Smart Organization**
-  - Search contacts by name, email, or location
-  - Filter contacts by time zone and availability status
-  - Sort contacts by name, time zone, status, or recent additions
-  - Group contacts by region for easy management
+- **Powerful Organization Tools**
+  - Smart search functionality for contacts and locations
+  - Advanced filtering by time zone and availability
+  - Multiple sorting options (name, time zone, status, recent)
+  - Regional grouping for better team management
 
-- **Customization**
-  - Multiple theme styles (Modern, Minimal, Glass, Neumorph, Colorful)
-  - Light and dark mode support
-  - Automatic system theme detection
-  - Internationalization support (English and Spanish)
+- **Beautiful & Customizable Interface**
+  - Five stunning theme styles:
+    - Modern: Clean and professional
+    - Minimal: Simple and focused
+    - Glass: Elegant transparency effects
+    - Neumorph: Soft and dimensional
+    - Colorful: Vibrant and energetic
+  - Automatic dark/light mode switching
+  - System theme detection
+  - Multi-language support (English/Spanish)
 
 ### For Developers
 
@@ -115,8 +119,8 @@ The application implements a comprehensive theme system with:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/timezone-hub.git
-   cd timezone-hub
+   git clone https://github.com/your-username/worldtime.git
+   cd worldtime
    ```
 
 2. Install dependencies:

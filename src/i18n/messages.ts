@@ -1,7 +1,7 @@
 export const messages = {
   es: {
-    'app.title': 'TimeZone Hub',
-    'app.description': 'Gestiona fácilmente las zonas horarias de tu equipo global',
+    'app.title': 'WorldTime',
+    'app.description': 'Conecta con tu equipo global en cualquier momento',
     'form.name.label': 'Nombre',
     'form.name.placeholder': 'Nombre de la persona',
     'form.timezone.label': 'Zona Horaria',
@@ -15,8 +15,8 @@ export const messages = {
     'person.delete': 'Eliminar persona'
   },
   en: {
-    'app.title': 'TimeZone Hub',
-    'app.description': 'Easily manage time zones for your global team',
+    'app.title': 'WorldTime',
+    'app.description': 'Connect with your global team anytime',
     'form.name.label': 'Name',
     'form.name.placeholder': 'Person\'s name',
     'form.timezone.label': 'Time Zone',

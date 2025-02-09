@@ -18,6 +18,9 @@
   --card-shadow: theme('boxShadow.lg');
   --input-bg: theme('colors.white');
   --input-border: theme('colors.gray.200');
+  --text-primary: theme('colors.gray.900');
+  --text-secondary: theme('colors.gray.600');
+  --text-tertiary: theme('colors.gray.500');
   --accent-primary: theme('colors.indigo.600');
   --accent-primary-light: theme('colors.indigo.400');
   --accent-bg: theme('colors.indigo.50');
@@ -34,12 +37,15 @@
   --card-shadow: theme('boxShadow.lg');
   --input-bg: theme('colors.gray.700');
   --input-border: theme('colors.gray.600');
+  --text-primary: theme('colors.gray.100');
+  --text-secondary: theme('colors.gray.300');
+  --text-tertiary: theme('colors.gray.400');
   --accent-primary: theme('colors.indigo.400');
   --accent-primary-light: theme('colors.indigo.300');
   --accent-bg: rgba(79, 70, 229, 0.1);
   --accent-border: rgba(79, 70, 229, 0.2);
-  --accent-text: theme('colors.indigo.400');
-  --accent-text-light: theme('colors.indigo.300');
+  --accent-text: theme('colors.indigo.300');
+  --accent-text-light: theme('colors.indigo.200');
 }
 
 /* Minimal Theme */
@@ -51,6 +57,9 @@
   --card-shadow: none;
   --input-bg: theme('colors.white');
   --input-border: theme('colors.gray.300');
+  --text-primary: theme('colors.gray.900');
+  --text-secondary: theme('colors.gray.700');
+  --text-tertiary: theme('colors.gray.600');
   --accent-primary: theme('colors.gray.800');
   --accent-primary-light: theme('colors.gray.600');
   --accent-bg: theme('colors.gray.100');
@@ -67,46 +76,55 @@
   --card-shadow: none;
   --input-bg: theme('colors.gray.800');
   --input-border: theme('colors.gray.700');
+  --text-primary: theme('colors.gray.100');
+  --text-secondary: theme('colors.gray.300');
+  --text-tertiary: theme('colors.gray.400');
   --accent-primary: theme('colors.gray.200');
-  --accent-primary-light: theme('colors.gray.400');
+  --accent-primary-light: theme('colors.gray.300');
   --accent-bg: theme('colors.gray.800');
   --accent-border: theme('colors.gray.700');
   --accent-text: theme('colors.gray.200');
-  --accent-text-light: theme('colors.gray.400');
+  --accent-text-light: theme('colors.gray.300');
 }
 
 /* Glassmorphic Theme */
 .theme-glassmorphic {
   --bg-gradient-from: theme('colors.purple.400');
   --bg-gradient-to: theme('colors.blue.500');
-  --card-bg: rgba(255, 255, 255, 0.8);
+  --card-bg: rgba(255, 255, 255, 0.9);
   --card-border: rgba(255, 255, 255, 0.3);
   --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-  --input-bg: rgba(255, 255, 255, 0.9);
+  --input-bg: rgba(255, 255, 255, 0.95);
   --input-border: rgba(255, 255, 255, 0.2);
+  --text-primary: theme('colors.gray.900');
+  --text-secondary: theme('colors.gray.700');
+  --text-tertiary: theme('colors.gray.600');
   --accent-primary: theme('colors.purple.600');
   --accent-primary-light: theme('colors.purple.400');
   --accent-bg: rgba(255, 255, 255, 0.9);
   --accent-border: rgba(255, 255, 255, 0.3);
-  --accent-text: theme('colors.purple.600');
-  --accent-text-light: theme('colors.purple.400');
+  --accent-text: theme('colors.purple.700');
+  --accent-text-light: theme('colors.purple.500');
   backdrop-filter: blur(8px);
 }
 
 .dark .theme-glassmorphic {
   --bg-gradient-from: theme('colors.purple.900');
   --bg-gradient-to: theme('colors.blue.900');
-  --card-bg: rgba(17, 24, 39, 0.8);
+  --card-bg: rgba(17, 24, 39, 0.9);
   --card-border: rgba(255, 255, 255, 0.1);
   --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-  --input-bg: rgba(17, 24, 39, 0.9);
+  --input-bg: rgba(17, 24, 39, 0.95);
   --input-border: rgba(255, 255, 255, 0.1);
-  --accent-primary: theme('colors.purple.400');
-  --accent-primary-light: theme('colors.purple.300');
+  --text-primary: theme('colors.gray.100');
+  --text-secondary: theme('colors.gray.300');
+  --text-tertiary: theme('colors.gray.400');
+  --accent-primary: theme('colors.purple.300');
+  --accent-primary-light: theme('colors.purple.200');
   --accent-bg: rgba(17, 24, 39, 0.9);
   --accent-border: rgba(255, 255, 255, 0.1);
-  --accent-text: theme('colors.purple.400');
-  --accent-text-light: theme('colors.purple.300');
+  --accent-text: theme('colors.purple.300');
+  --accent-text-light: theme('colors.purple.200');
 }
 
 /* Neumorphic Theme */
@@ -118,6 +136,9 @@
   --card-shadow: 20px 20px 60px #d1d1d1, -20px -20px 60px #ffffff;
   --input-bg: theme('colors.gray.100');
   --input-border: transparent;
+  --text-primary: theme('colors.gray.900');
+  --text-secondary: theme('colors.gray.700');
+  --text-tertiary: theme('colors.gray.600');
   --accent-primary: theme('colors.gray.700');
   --accent-primary-light: theme('colors.gray.500');
   --accent-bg: theme('colors.gray.100');
@@ -134,12 +155,15 @@
   --card-shadow: 20px 20px 60px #1a1a1a, -20px -20px 60px #2a2a2a;
   --input-bg: theme('colors.gray.800');
   --input-border: transparent;
-  --accent-primary: theme('colors.gray.300');
-  --accent-primary-light: theme('colors.gray.400');
+  --text-primary: theme('colors.gray.100');
+  --text-secondary: theme('colors.gray.300');
+  --text-tertiary: theme('colors.gray.400');
+  --accent-primary: theme('colors.gray.200');
+  --accent-primary-light: theme('colors.gray.300');
   --accent-bg: theme('colors.gray.800');
   --accent-border: transparent;
-  --accent-text: theme('colors.gray.300');
-  --accent-text-light: theme('colors.gray.400');
+  --accent-text: theme('colors.gray.200');
+  --accent-text-light: theme('colors.gray.300');
 }
 
 /* Colorful Theme */
@@ -151,12 +175,15 @@
   --card-shadow: 0 4px 6px -1px rgba(251, 146, 60, 0.1);
   --input-bg: theme('colors.white');
   --input-border: theme('colors.orange.300');
-  --accent-primary: theme('colors.orange.500');
-  --accent-primary-light: theme('colors.orange.400');
+  --text-primary: theme('colors.gray.900');
+  --text-secondary: theme('colors.gray.700');
+  --text-tertiary: theme('colors.gray.600');
+  --accent-primary: theme('colors.orange.600');
+  --accent-primary-light: theme('colors.orange.500');
   --accent-bg: theme('colors.orange.50');
   --accent-border: theme('colors.orange.200');
-  --accent-text: theme('colors.orange.600');
-  --accent-text-light: theme('colors.orange.400');
+  --accent-text: theme('colors.orange.700');
+  --accent-text-light: theme('colors.orange.500');
 }
 
 .dark .theme-colorful {
@@ -167,17 +194,20 @@
   --card-shadow: 0 4px 6px -1px rgba(251, 146, 60, 0.2);
   --input-bg: theme('colors.gray.700');
   --input-border: theme('colors.orange.700');
-  --accent-primary: theme('colors.orange.400');
-  --accent-primary-light: theme('colors.orange.300');
+  --text-primary: theme('colors.gray.100');
+  --text-secondary: theme('colors.gray.300');
+  --text-tertiary: theme('colors.gray.400');
+  --accent-primary: theme('colors.orange.300');
+  --accent-primary-light: theme('colors.orange.200');
   --accent-bg: rgba(251, 146, 60, 0.1);
   --accent-border: theme('colors.orange.800');
-  --accent-text: theme('colors.orange.400');
-  --accent-text-light: theme('colors.orange.300');
+  --accent-text: theme('colors.orange.300');
+  --accent-text-light: theme('colors.orange.200');
 }
 
 @layer base {
   body {
-    @apply bg-gradient-to-br from-[var(--bg-gradient-from)] to-[var(--bg-gradient-to)] min-h-screen;
+    @apply bg-gradient-to-br from-[var(--bg-gradient-from)] to-[var(--bg-gradient-to)] min-h-screen text-[var(--text-primary)];
   }
 }
 
@@ -191,7 +221,7 @@
   }
 
   .btn-secondary {
-    @apply bg-[var(--card-bg)] text-[var(--accent-text)] border border-[var(--card-border)] hover:opacity-90;
+    @apply bg-[var(--card-bg)] text-[var(--text-primary)] border border-[var(--card-border)] hover:opacity-90;
   }
 
   .card {
@@ -199,7 +229,19 @@
   }
 
   .input {
-    @apply w-full px-4 py-2 bg-[var(--input-bg)] border border-[var(--input-border)] rounded-lg focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent;
+    @apply w-full px-4 py-2 bg-[var(--input-bg)] border border-[var(--input-border)] rounded-lg focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent text-[var(--text-primary)];
+  }
+
+  .text-primary {
+    @apply text-[var(--text-primary)];
+  }
+
+  .text-secondary {
+    @apply text-[var(--text-secondary)];
+  }
+
+  .text-tertiary {
+    @apply text-[var(--text-tertiary)];
   }
 }
 

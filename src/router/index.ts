@@ -21,6 +21,14 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/privacy',
+      component: () => import('@/views/PrivacyPolicyView.vue'),
+    },
+    {
+      path: '/terms',
+      component: () => import('@/views/TermsView.vue'),
+    },
+    {
       path: '/auth/callback',
       component: () => import('@/views/AuthCallbackView.vue'),
     },
