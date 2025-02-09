@@ -16,28 +16,28 @@
         :key="notification.id"
         class="flex items-start gap-3 p-4 rounded-lg shadow-lg max-w-md w-full animate-slide-up"
         :class="[
-          notification.type === 'success' && 'bg-green-50 text-green-800',
-          notification.type === 'error' && 'bg-red-50 text-red-800',
-          notification.type === 'info' && 'bg-blue-50 text-blue-800',
-          notification.type === 'warning' && 'bg-yellow-50 text-yellow-800'
+          notification.type === 'success' && 'bg-[var(--accent-bg)] text-[var(--accent-text)]',
+          notification.type === 'error' && 'bg-[var(--danger-bg)] text-[var(--danger)]',
+          notification.type === 'info' && 'bg-[var(--accent-bg)] text-[var(--accent-text)]',
+          notification.type === 'warning' && 'bg-[var(--danger-bg)] text-[var(--danger)]'
         ]"
       >
         <div class="flex-shrink-0 mt-0.5">
           <CheckCircle
             v-if="notification.type === 'success'"
-            class="w-5 h-5 text-green-500"
+            class="w-5 h-5 text-[var(--accent-text)]"
           />
           <AlertCircle
             v-else-if="notification.type === 'error'"
-            class="w-5 h-5 text-red-500"
+            class="w-5 h-5 text-[var(--danger)]"
           />
           <Info
             v-else-if="notification.type === 'info'"
-            class="w-5 h-5 text-blue-500"
+            class="w-5 h-5 text-[var(--accent-text)]"
           />
           <AlertTriangle
             v-else-if="notification.type === 'warning'"
-            class="w-5 h-5 text-yellow-500"
+            class="w-5 h-5 text-[var(--danger)]"
           />
         </div>
         <div class="flex-1 pt-0.5">
@@ -49,10 +49,10 @@
           @click="notificationStore.remove(notification.id)"
           class="flex-shrink-0 ml-2"
           :class="[
-            notification.type === 'success' && 'text-green-500 hover:text-green-600',
-            notification.type === 'error' && 'text-red-500 hover:text-red-600',
-            notification.type === 'info' && 'text-blue-500 hover:text-blue-600',
-            notification.type === 'warning' && 'text-yellow-500 hover:text-yellow-600'
+            notification.type === 'success' && 'text-[var(--accent-text)] hover:text-[var(--accent-text-light)]',
+            notification.type === 'error' && 'text-[var(--danger)] hover:text-[var(--danger-hover)]',
+            notification.type === 'info' && 'text-[var(--accent-text)] hover:text-[var(--accent-text-light)]',
+            notification.type === 'warning' && 'text-[var(--danger)] hover:text-[var(--danger-hover)]'
           ]"
         >
           <X class="w-5 h-5" />
@@ -74,20 +74,3 @@ const props = withDefaults(defineProps<{
 
 const notificationStore = useNotificationStore();
 </script>
-
-<style scoped>
-.animate-slide-up {
-  animation: slide-up 0.3s ease-out;
-}
-
-@keyframes slide-up {
-  from {
-    transform: translateY(1rem);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-</style>

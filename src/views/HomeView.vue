@@ -1,25 +1,25 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-    <header class="bg-white dark:bg-gray-800 shadow-sm">
+  <div class="min-h-screen bg-gradient-to-br from-[var(--bg-gradient-from)] to-[var(--bg-gradient-to)]">
+    <header class="bg-[var(--card-bg)] shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-4">
           <div class="flex items-center gap-3">
-            <Users class="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Contacts</h1>
+            <Users class="w-8 h-8 text-[var(--accent-primary)]" />
+            <h1 class="text-2xl font-bold text-[var(--text-primary)]">Contacts</h1>
           </div>
           <div class="flex items-center gap-4">
             <div class="flex items-center gap-2">
               <button
                 @click="view = 'timeline'"
                 class="px-3 py-2 rounded-lg transition-colors"
-                :class="view === 'timeline' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400' : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'"
+                :class="view === 'timeline' ? 'bg-[var(--accent-bg)] text-[var(--accent-text)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'"
               >
                 <Clock class="w-5 h-5" />
               </button>
               <button
                 @click="view = 'list'"
                 class="px-3 py-2 rounded-lg transition-colors"
-                :class="view === 'list' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400' : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'"
+                :class="view === 'list' ? 'bg-[var(--accent-bg)] text-[var(--accent-text)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'"
               >
                 <List class="w-5 h-5" />
               </button>
@@ -27,13 +27,13 @@
             <ThemeToggle />
             <RouterLink
               to="/profile"
-              class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+              class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >
               <UserCircle class="w-6 h-6" />
             </RouterLink>
             <button
               @click="handleSignOut"
-              class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+              class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >
               <LogOut class="w-6 h-6" />
             </button>
@@ -52,7 +52,7 @@
           </div>
           <button
             @click="showAddContact = true"
-            class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center gap-2"
+            class="btn btn-primary flex items-center gap-2"
           >
             <Plus class="w-5 h-5" />
             Add Contact
@@ -112,7 +112,7 @@
           </div>
           <button
             @click="showAddContact = true"
-            class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center gap-2"
+            class="btn btn-primary flex items-center gap-2"
           >
             <Plus class="w-5 h-5" />
             Add Contact

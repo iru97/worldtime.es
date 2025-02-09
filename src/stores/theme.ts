@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 
 export type ThemeStyle = 'modern' | 'minimal' | 'glassmorphic' | 'neumorphic' | 'colorful';
 export type ThemeMode = 'light' | 'dark';
@@ -24,7 +24,6 @@ export const useThemeStore = defineStore('theme', () => {
   function setThemeStyle(style: ThemeStyle) {
     theme.value.style = style;
     localStorage.setItem('themeStyle', style);
-    updateDocumentClass();
   }
 
   function toggleThemeMode() {
@@ -32,17 +31,11 @@ export const useThemeStore = defineStore('theme', () => {
   }
 
   function updateDocumentClass() {
-    // Remove all theme classes first
-    document.documentElement.classList.remove(
-      'light', 'dark',
-      'theme-modern', 'theme-minimal', 'theme-glassmorphic', 'theme-neumorphic', 'theme-colorful'
-    );
-    
-    // Add current theme classes
-    document.documentElement.classList.add(
-      theme.value.mode,
-      `theme-${theme.value.style}`
-    );
+    if (theme.value.mode === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }
 
   // Initialize theme

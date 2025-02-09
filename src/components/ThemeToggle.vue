@@ -3,7 +3,7 @@
     <!-- Theme Style Selector -->
     <select
       v-model="themeStore.theme.style"
-      class="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+      class="px-3 py-2 rounded-lg bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent"
       @change="themeStore.setThemeStyle($event.target.value)"
     >
       <option value="modern">Modern</option>
@@ -16,11 +16,11 @@
     <!-- Light/Dark Mode Toggle -->
     <button
       @click="themeStore.toggleThemeMode"
-      class="p-2 rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+      class="p-2 rounded-lg transition-colors hover:bg-[var(--accent-bg)]"
       :title="themeStore.theme.mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
     >
-      <Sun v-if="themeStore.theme.mode === 'dark'" class="w-5 h-5 text-gray-600 dark:text-gray-300" />
-      <Moon v-else class="w-5 h-5 text-gray-600 dark:text-gray-300" />
+      <Sun v-if="themeStore.theme.mode === 'dark'" class="w-5 h-5 text-[var(--text-primary)]" />
+      <Moon v-else class="w-5 h-5 text-[var(--text-primary)]" />
     </button>
   </div>
 </template>
