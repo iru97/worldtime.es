@@ -2,7 +2,9 @@
 
 A modern web application for managing international contacts and their time zones, built with Vue 3 and Supabase.
 
-![TimeWorld Management](https://source.unsplash.com/1600x900/?time,clock)
+![time-zone (1)](https://github.com/user-attachments/assets/59d3b435-eb20-4630-ae0d-376c43ee4691)
+
+<a href="https://www.flaticon.com/free-icons/world-time" title="world time icons">World time icons created by Flat Icons - Flaticon</a>
 
 ## Features
 
