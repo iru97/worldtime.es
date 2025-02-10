@@ -13,13 +13,14 @@ const pinia = createPinia();
 app.use(pinia);
 const authStore = useAuthStore();
 
-const defaultLocale = navigator.language.split('-')[0] || 'en';
-const supportedLocales = ['en', 'es'];
-const locale = supportedLocales.includes(defaultLocale) ? defaultLocale : 'en';
+// Get preferred language from localStorage or browser
+const savedLanguage = localStorage.getItem('preferred-language');
+const browserLanguage = navigator.language.split('-')[0];
+const defaultLocale = savedLanguage || (browserLanguage === 'es' ? 'es' : 'en');
 
 const i18n = createI18n({
   legacy: false,
-  locale,
+  locale: defaultLocale,
   fallbackLocale: 'en',
   messages,
 });
