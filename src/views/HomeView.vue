@@ -1,48 +1,70 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-[var(--bg-gradient-from)] to-[var(--bg-gradient-to)]">
-    <header class="bg-[var(--card-bg)] shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-          <div class="flex items-center gap-3">
-            <Users class="w-8 h-8 text-[var(--accent-primary)]" />
-            <h1 class="text-2xl font-bold text-[var(--text-primary)]">Contacts</h1>
+    <header class="w-full bg-[var(--card-bg)] shadow-sm">
+      <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center gap-2 sm:gap-3">
+            <Users class="w-6 h-6 sm:w-8 sm:h-8 text-[var(--accent-primary)]" />
+            <h1 class="text-lg sm:text-2xl font-bold text-[var(--text-primary)]">Contacts</h1>
           </div>
-          <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2">
+          <div class="flex items-center">
+            <div class="hidden sm:flex items-center gap-2">
               <button
                 @click="view = 'timeline'"
-                class="px-3 py-2 rounded-lg transition-colors"
+                class="px-2 sm:px-3 py-2 rounded-lg transition-colors"
                 :class="view === 'timeline' ? 'bg-[var(--accent-bg)] text-[var(--accent-text)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'"
               >
                 <Clock class="w-5 h-5" />
               </button>
               <button
                 @click="view = 'list'"
-                class="px-3 py-2 rounded-lg transition-colors"
+                class="px-2 sm:px-3 py-2 rounded-lg transition-colors"
                 :class="view === 'list' ? 'bg-[var(--accent-bg)] text-[var(--accent-text)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'"
               >
                 <List class="w-5 h-5" />
               </button>
             </div>
-            <ThemeToggle />
-            <RouterLink
-              to="/profile"
-              class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-            >
-              <UserCircle class="w-6 h-6" />
-            </RouterLink>
-            <button
-              @click="handleSignOut"
-              class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-            >
-              <LogOut class="w-6 h-6" />
-            </button>
+            <ThemeToggle class="hidden sm:flex ml-4" />
+            <div class="flex items-center gap-2 sm:gap-4 ml-2 sm:ml-4">
+              <RouterLink
+                to="/profile"
+                class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              >
+                <UserCircle class="w-5 h-5 sm:w-6 sm:h-6" />
+              </RouterLink>
+              <button
+                @click="handleSignOut"
+                class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              >
+                <LogOut class="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Mobile View Controls -->
+    <div class="sm:hidden flex items-center justify-between px-3 py-2 bg-[var(--card-bg)] border-t border-[var(--card-border)]">
+      <button
+        @click="view = 'timeline'"
+        class="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-colors"
+        :class="view === 'timeline' ? 'bg-[var(--accent-bg)] text-[var(--accent-text)]' : 'text-[var(--text-secondary)]'"
+      >
+        <Clock class="w-5 h-5" />
+        <span class="text-sm">Timeline</span>
+      </button>
+      <button
+        @click="view = 'list'"
+        class="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-colors"
+        :class="view === 'list' ? 'bg-[var(--accent-bg)] text-[var(--accent-text)]' : 'text-[var(--text-secondary)]'"
+      >
+        <List class="w-5 h-5" />
+        <span class="text-sm">List</span>
+      </button>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
       <!-- Timeline View -->
       <div v-if="view === 'timeline'" class="space-y-8">
         <div class="flex justify-between items-center mb-6">

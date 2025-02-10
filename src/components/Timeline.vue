@@ -1,19 +1,19 @@
 <template>
-  <div class="card mb-8">
-    <div class="mb-8">
-      <div class="flex items-center justify-between mb-6">
+  <div class="card mb-4 sm:mb-8">
+    <div class="mb-4 sm:mb-8">
+      <div class="flex items-center justify-between mb-4 sm:mb-6">
         <button
           @click="handlePrevDay"
           class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
           :title="t('nav.prevDay')"
         >
-          <ChevronLeft class="w-6 h-6 text-gray-600 dark:text-gray-400" />
+          <ChevronLeft class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 dark:text-gray-400" />
         </button>
-        <div class="text-center px-8 py-4 rounded-2xl shadow-sm bg-[var(--accent-bg)] border border-[var(--accent-border)]">
-          <div class="text-4xl font-mono font-bold text-[var(--accent-text)] tracking-wider mb-1">
+        <div class="text-center px-4 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-sm bg-[var(--accent-bg)] border border-[var(--accent-border)]">
+          <div class="text-2xl sm:text-4xl font-mono font-bold text-[var(--accent-text)] tracking-wider mb-1">
             {{ formatTime(selectedDate) }}
           </div>
-          <div class="text-sm font-medium text-[var(--accent-text-light)] capitalize">
+          <div class="text-xs sm:text-sm font-medium text-[var(--accent-text-light)] capitalize">
             {{ formatDate(selectedDate) }}
           </div>
         </div>
@@ -22,7 +22,7 @@
           class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
           :title="t('nav.nextDay')"
         >
-          <ChevronRight class="w-6 h-6 text-gray-600 dark:text-gray-400" />
+          <ChevronRight class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 dark:text-gray-400" />
         </button>
       </div>
 
@@ -32,7 +32,7 @@
 
         <div
           ref="timelineRef"
-          class="h-20 relative overflow-hidden select-none cursor-grab active:cursor-grabbing"
+          class="h-16 sm:h-20 relative overflow-hidden select-none cursor-grab active:cursor-grabbing"
           @mousedown="handleMouseDown"
           @touchstart="handleTouchStart"
         >
@@ -49,19 +49,22 @@
                 :key="hour"
                 class="absolute flex flex-col items-center transform -translate-x-1/2"
                 :style="{ left: `${((hour - 24) / 24) * 100}%` }"
+                :class="{
+                  'hidden sm:flex': !shouldShowHourMobile(hour)
+                }"
               >
                 <div
-                  class="h-4 w-0.5 mb-2"
+                  class="h-3 sm:h-4 w-0.5 mb-1 sm:mb-2"
                   :class="{
                     'bg-[var(--accent-primary)]': Math.abs(((hour - 24) % 24) - currentHour) <= 1,
                     'bg-gray-300 dark:bg-gray-600': Math.abs(((hour - 24) % 24) - currentHour) > 1
                   }"
                 />
                 <span
-                  class="text-sm font-mono transition-all duration-200"
+                  class="text-xs sm:text-sm font-mono transition-all duration-200"
                   :class="{
-                    'text-[var(--accent-primary)] font-bold scale-125': Math.abs(((hour - 24) % 24) - currentHour) < 1,
-                    'text-[var(--accent-primary-light)] font-medium scale-110': Math.abs(((hour - 24) % 24) - currentHour) === 1,
+                    'text-[var(--accent-primary)] font-bold scale-110 sm:scale-125': Math.abs(((hour - 24) % 24) - currentHour) < 1,
+                    'text-[var(--accent-primary-light)] font-medium scale-105 sm:scale-110': Math.abs(((hour - 24) % 24) - currentHour) === 1,
                     'text-gray-400 dark:text-gray-500': Math.abs(((hour - 24) % 24) - currentHour) > 1
                   }"
                 >
@@ -198,6 +201,12 @@ function updateTimeFromOffset(newOffset: number) {
   offset.value = newOffset;
   
   emit('update', newDate);
+}
+
+function shouldShowHourMobile(hour: number): boolean {
+  const normalizedHour = (hour - 24) % 24;
+  // En móvil, mostrar solo las horas pares
+  return normalizedHour % 2 === 0;
 }
 
 // Watch for changes in selectedDate and recenter the timeline
