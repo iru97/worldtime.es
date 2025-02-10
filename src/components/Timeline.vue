@@ -28,7 +28,6 @@
 
       <!-- Timeline -->
       <div class="relative">
-        <!-- Center marker line -->
         <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-[var(--accent-primary)] z-10"></div>
 
         <div
@@ -45,7 +44,6 @@
             }"
           >
             <div class="absolute inset-0 flex items-center">
-              <!-- Generate 72 hours (3 days) for continuous scrolling -->
               <div
                 v-for="hour in 72" 
                 :key="hour"
@@ -91,10 +89,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { ChevronLeft, ChevronRight, Clock } from 'lucide-vue-next';
-
-const { t } = useI18n();
 
 const props = defineProps<{
   selectedDate: Date;

@@ -70,34 +70,44 @@
 
       <!-- Floating Time Cards -->
       <div class="hidden lg:block absolute -top-4 left-12 animate-float-1">
-        <div class="card p-4 rotate-[-15deg]">
-          <h3 class="font-medium text-[var(--text-primary)]">New York</h3>
-          <p class="text-2xl font-mono font-bold text-[var(--accent-primary)]">09:00</p>
-        </div>
+        <FloatingTimeCard
+          name="New York"
+          timezone="America/New_York"
+          :time="formatTime(selectedDate, 'America/New_York')"
+          rotate="left"
+        />
       </div>
       <div class="hidden lg:block absolute top-1/4 right-24 animate-float-2">
-        <div class="card p-4 rotate-[10deg]">
-          <h3 class="font-medium text-[var(--text-primary)]">London</h3>
-          <p class="text-2xl font-mono font-bold text-[var(--accent-primary)]">14:00</p>
-        </div>
+        <FloatingTimeCard
+          name="London"
+          timezone="Europe/London"
+          :time="formatTime(selectedDate, 'Europe/London')"
+          rotate="right"
+        />
       </div>
       <div class="hidden lg:block absolute top-1/2 left-24 animate-float-3">
-        <div class="card p-4 rotate-[-5deg]">
-          <h3 class="font-medium text-[var(--text-primary)]">Tokyo</h3>
-          <p class="text-2xl font-mono font-bold text-[var(--accent-primary)]">22:00</p>
-        </div>
+        <FloatingTimeCard
+          name="Tokyo"
+          timezone="Asia/Tokyo"
+          :time="formatTime(selectedDate, 'Asia/Tokyo')"
+          rotate="slight-left"
+        />
       </div>
       <div class="hidden lg:block absolute bottom-1/4 right-16 animate-float-4">
-        <div class="card p-4 rotate-[15deg]">
-          <h3 class="font-medium text-[var(--text-primary)]">Sydney</h3>
-          <p class="text-2xl font-mono font-bold text-[var(--accent-primary)]">23:00</p>
-        </div>
+        <FloatingTimeCard
+          name="Sydney"
+          timezone="Australia/Sydney"
+          :time="formatTime(selectedDate, 'Australia/Sydney')"
+          rotate="slight-right"
+        />
       </div>
       <div class="hidden lg:block absolute -bottom-8 left-32 animate-float-5">
-        <div class="card p-4 rotate-[-8deg]">
-          <h3 class="font-medium text-[var(--text-primary)]">Dubai</h3>
-          <p class="text-2xl font-mono font-bold text-[var(--accent-primary)]">17:00</p>
-        </div>
+        <FloatingTimeCard
+          name="Dubai"
+          timezone="Asia/Dubai"
+          :time="formatTime(selectedDate, 'Asia/Dubai')"
+          rotate="slight-left-2"
+        />
       </div>
     </header>
 
@@ -189,6 +199,7 @@
               :name="person.name"
               :timezone="person.timezone"
               :time="formatTime(selectedDate, person.timezone)"
+              :full-width="false"
             />
           </div>
         </div>
@@ -227,6 +238,7 @@ import AppFooter from '@/components/AppFooter.vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import LanguageSelector from '@/components/LanguageSelector.vue';
 import LandingDrawer from '@/components/LandingDrawer.vue';
+import FloatingTimeCard from '@/components/FloatingTimeCard.vue';
 import { TimeService } from '@/services/TimeService';
 
 const selectedDate = ref(new Date());

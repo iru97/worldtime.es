@@ -70,6 +70,17 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
       <div class="space-y-6">
+        <!-- Add Contact Button -->
+        <div class="flex justify-end">
+          <button
+            @click="showContactModal = true"
+            class="btn btn-primary flex items-center gap-2"
+          >
+            <UserPlus class="w-5 h-5" />
+            {{ $t('contacts.addNew') }}
+          </button>
+        </div>
+
         <!-- Timeline View -->
         <Timeline
           v-if="view === 'timeline'"
@@ -82,96 +93,78 @@
           <Loader2 class="w-8 h-8 text-[var(--accent-primary)] animate-spin" />
         </div>
 
-        <div v-else class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <TimeCard
-            v-if="view === 'timeline'"
-            v-for="contact in contactsStore.contacts"
-            :key="contact.id"
-            :contact="contact"
-          />
-          <ContactCard
-            v-else
-            v-for="contact in contactsStore.contacts"
-            :key="contact.id"
-            :contact="contact"
-            @edit="handleEditContact"
-            @delete="handleDeleteContact"
-          />
+        <div v-else>
+          <div v-if="view === 'timeline'" class="space-y-4">
+            <TimeCard
+              v-for="contact in contactsStore.contacts"
+              :key="contact.id"
+              :name="contact.name"
+              :timezone="contact.timezone"
+              :time="formatTime(selectedDate, contact.timezone)"
+            />
+          </div>
+          <div v-else class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ContactCard
+              v-for="contact in contactsStore.contacts"
+              :key="contact.id"
+              :contact="contact"
+              @edit="handleEditContact"
+              @delete="handleDeleteContact"
+            />
+          </div>
         </div>
       </div>
-
-      <!-- Add Contact Button -->
-      <button
-        @click="showAddContact = true"
-        class="fixed right-4 bottom-4 bg-[var(--accent-primary)] text-white p-3 rounded-full shadow-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
-        :title="$t('contacts.addNew')"
-      >
-        <Plus class="w-6 h-6" />
-      </button>
-
-      <!-- Contact Modal -->
-      <ContactModal
-        v-if="showAddContact"
-        :contact="editingContact"
-        @close="handleCloseModal"
-        @submit="handleSubmitContact"
-      />
     </main>
+
+    <!-- Contact Modal -->
+    <ContactModal
+      v-if="showContactModal"
+      :contact="selectedContact"
+      @close="handleCloseModal"
+      @submit="handleSubmitContact"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { Users, Clock, List, UserCircle, LogOut, Menu, Plus, Loader2 } from 'lucide-vue-next';
+import { Users, Clock, List, Menu, UserCircle, LogOut, UserPlus, Loader2 } from 'lucide-vue-next';
+import type { Contact } from '@/types';
+import { TimeService } from '@/services/TimeService';
+import { useAuthStore } from '@/stores/auth';
+import { useContactsStore } from '@/stores/contacts';
+import { useNotificationStore } from '@/stores/notifications';
 import Timeline from '@/components/Timeline.vue';
 import TimeCard from '@/components/TimeCard.vue';
 import ContactCard from '@/components/ContactCard.vue';
 import ContactModal from '@/components/ContactModal.vue';
-import MobileDrawer from '@/components/MobileDrawer.vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import LanguageSelector from '@/components/LanguageSelector.vue';
-import { useAuthStore } from '@/stores/auth';
-import { useContactsStore } from '@/stores/contacts';
-import type { Contact } from '@/types';
+import MobileDrawer from '@/components/MobileDrawer.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
 const contactsStore = useContactsStore();
+const notificationStore = useNotificationStore();
+const timeService = new TimeService();
 
 const view = ref<'timeline' | 'list'>('timeline');
 const selectedDate = ref(new Date());
 const showMobileMenu = ref(false);
-const showAddContact = ref(false);
-const editingContact = ref<Contact | undefined>();
+const showContactModal = ref(false);
+const selectedContact = ref<Contact | null>(null);
+
+onMounted(async () => {
+  await contactsStore.fetchContacts();
+});
 
 function handleTimeUpdate(date: Date) {
   selectedDate.value = date;
 }
 
-function handleEditContact(contact: Contact) {
-  editingContact.value = contact;
-  showAddContact.value = true;
-}
-
-function handleDeleteContact(id: string) {
-  if (confirm($t('contacts.deleteConfirm'))) {
-    contactsStore.deleteContact(id);
-  }
-}
-
-function handleCloseModal() {
-  showAddContact.value = false;
-  editingContact.value = undefined;
-}
-
-async function handleSubmitContact(contact: Partial<Contact>) {
-  if (editingContact.value) {
-    await contactsStore.updateContact(editingContact.value.id, contact);
-  } else {
-    await contactsStore.addContact(contact);
-  }
-  handleCloseModal();
+function formatTime(date: Date, timezone: string): string {
+  return timeService.formatTime(date, timezone, 'en');
 }
 
 async function handleSignOut() {
@@ -179,8 +172,39 @@ async function handleSignOut() {
   router.push('/login');
 }
 
-// Fetch contacts when component mounts
-onMounted(() => {
-  contactsStore.fetchContacts();
-});
+function handleEditContact(contact: Contact) {
+  selectedContact.value = contact;
+  showContactModal.value = true;
+}
+
+async function handleDeleteContact(id: string) {
+  if (!confirm($t('contacts.deleteConfirm'))) return;
+
+  const { success } = await contactsStore.deleteContact(id);
+  if (success) {
+    notificationStore.add('success', 'Contact deleted successfully');
+  }
+}
+
+function handleCloseModal() {
+  showContactModal.value = false;
+  selectedContact.value = null;
+}
+
+async function handleSubmitContact(contact: Partial<Contact>) {
+  if (selectedContact.value) {
+    const { success } = await contactsStore.updateContact(selectedContact.value.id, contact);
+    if (success) {
+      notificationStore.add('success', 'Contact updated successfully');
+      handleCloseModal();
+    }
+  } else {
+    const { success } = await contactsStore.addContact(contact);
+    if (success) {
+      notificationStore.add('success', 'Contact added successfully');
+      handleCloseModal();
+    }
+  }
+}
 </script>
+```
