@@ -7,6 +7,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      component: () => import('@/views/LandingView.vue'),
+      meta: { requiresGuest: true },
+    },
+    {
+      path: '/home',
       component: () => import('@/views/HomeView.vue'),
       meta: { requiresAuth: true },
     },
@@ -32,6 +37,14 @@ const router = createRouter({
       path: '/auth/callback',
       component: () => import('@/views/AuthCallbackView.vue'),
     },
+    // Redirect all unmatched routes to landing for guests and home for authenticated users
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: to => {
+        const authStore = useAuthStore();
+        return authStore.isAuthenticated ? '/home' : '/';
+      },
+    },
   ],
 });
 
@@ -52,11 +65,13 @@ router.beforeEach(async (to) => {
     });
   }
 
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    return '/login';
+  // Redirect authenticated users from guest routes to home
+  if (to.meta.requiresGuest && authStore.isAuthenticated) {
+    return '/home';
   }
 
-  if (to.meta.requiresGuest && authStore.isAuthenticated) {
+  // Redirect unauthenticated users from protected routes to landing
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     return '/';
   }
 });
