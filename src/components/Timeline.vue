@@ -5,7 +5,7 @@
         <button
           @click="handlePrevDay"
           class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-          :title="t('nav.prevDay')"
+          :title="$t('nav.prevDay')"
         >
           <ChevronLeft class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 dark:text-gray-400" />
         </button>
@@ -20,7 +20,7 @@
         <button
           @click="handleNextDay"
           class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-          :title="t('nav.nextDay')"
+          :title="$t('nav.nextDay')"
         >
           <ChevronRight class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 dark:text-gray-400" />
         </button>
@@ -28,11 +28,12 @@
 
       <!-- Timeline -->
       <div class="relative">
-        <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-[var(--accent-primary)]"></div>
+        <!-- Center marker line -->
+        <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-[var(--accent-primary)] z-10"></div>
 
         <div
           ref="timelineRef"
-          class="h-16 sm:h-20 relative overflow-hidden select-none cursor-grab active:cursor-grabbing"
+          class="h-24 sm:h-32 relative overflow-hidden select-none cursor-grab active:cursor-grabbing"
           @mousedown="handleMouseDown"
           @touchstart="handleTouchStart"
         >
@@ -44,45 +45,56 @@
             }"
           >
             <div class="absolute inset-0 flex items-center">
+              <!-- Generate 72 hours (3 days) for continuous scrolling -->
               <div
                 v-for="hour in 72" 
                 :key="hour"
                 class="absolute flex flex-col items-center transform -translate-x-1/2"
-                :style="{ left: `${((hour - 24) / 24) * 100}%` }"
+                :style="{ left: `${((hour - 36) / 8) * 100}%` }"
                 :class="{
                   'hidden sm:flex': !shouldShowHourMobile(hour)
                 }"
               >
                 <div
-                  class="h-3 sm:h-4 w-0.5 mb-1 sm:mb-2"
+                  class="h-6 sm:h-8 w-0.5 mb-3 sm:mb-4"
                   :class="{
-                    'bg-[var(--accent-primary)]': Math.abs(((hour - 24) % 24) - currentHour) <= 1,
-                    'bg-gray-300 dark:bg-gray-600': Math.abs(((hour - 24) % 24) - currentHour) > 1
+                    'bg-[var(--accent-primary)]': isCurrentHour(hour),
+                    'bg-gray-300 dark:bg-gray-600': !isCurrentHour(hour)
                   }"
                 />
                 <span
-                  class="text-xs sm:text-sm font-mono transition-all duration-200"
+                  class="text-base sm:text-lg font-mono transition-all duration-200"
                   :class="{
-                    'text-[var(--accent-primary)] font-bold scale-110 sm:scale-125': Math.abs(((hour - 24) % 24) - currentHour) < 1,
-                    'text-[var(--accent-primary-light)] font-medium scale-105 sm:scale-110': Math.abs(((hour - 24) % 24) - currentHour) === 1,
-                    'text-gray-400 dark:text-gray-500': Math.abs(((hour - 24) % 24) - currentHour) > 1
+                    'text-[var(--accent-primary)] font-bold scale-110 sm:scale-125': isCurrentHour(hour),
+                    'text-gray-400 dark:text-gray-500': !isCurrentHour(hour)
                   }"
                 >
-                  {{ formatHour((hour - 24) % 24) }}
+                  {{ formatHour((hour - 36) % 24) }}
                 </span>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- Current Time Button -->
+        <button
+          @click="goToCurrentTime"
+          class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--accent-bg)] text-[var(--accent-text)] hover:bg-[var(--accent-bg-hover)] transition-colors text-sm font-medium"
+        >
+          <Clock class="w-4 h-4" />
+          {{ $t('timeline.currentTime') }}
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
+import { ChevronLeft, ChevronRight, Clock } from 'lucide-vue-next';
+
+const { t } = useI18n();
 
 const props = defineProps<{
   selectedDate: Date;
@@ -92,15 +104,14 @@ const emit = defineEmits<{
   (e: 'update', date: Date): void;
 }>();
 
-const { t } = useI18n();
 const timelineRef = ref<HTMLElement | null>(null);
 const isDragging = ref(false);
-const startX = ref(0);
 const offset = ref(0);
 const currentHour = computed(() => props.selectedDate.getHours() + props.selectedDate.getMinutes() / 60);
 
 function formatHour(hour: number): string {
-  return `${hour.toString().padStart(2, '0')}:00`;
+  const normalizedHour = ((hour % 24) + 24) % 24;
+  return `${normalizedHour.toString().padStart(2, '0')}:00`;
 }
 
 function formatTime(date: Date): string {
@@ -120,6 +131,15 @@ function formatDate(date: Date): string {
   });
 }
 
+function shouldShowHourMobile(hour: number): boolean {
+  return hour % 6 === 0; // Show every sixth hour on mobile for more spacing
+}
+
+function isCurrentHour(hour: number): boolean {
+  const normalizedHour = ((hour - 36) % 24 + 24) % 24;
+  return Math.abs(normalizedHour - currentHour.value) < 0.5;
+}
+
 function handlePrevDay() {
   const newDate = new Date(props.selectedDate);
   newDate.setDate(props.selectedDate.getDate() - 1);
@@ -135,53 +155,61 @@ function handleNextDay() {
 function centerTimelineOnCurrentHour() {
   if (!timelineRef.value) return;
   const width = timelineRef.value.offsetWidth;
-  const hourWidth = width / 24;
+  const hourWidth = width / 8; // Ajustado para coincidir con el espaciado
   offset.value = width / 2 - (currentHour.value * hourWidth);
+}
+
+function goToCurrentTime() {
+  const now = new Date();
+  emit('update', now);
+  centerTimelineOnCurrentHour();
 }
 
 function handleMouseDown(e: MouseEvent) {
   isDragging.value = true;
-  startX.value = e.clientX - offset.value;
+  const startX = e.clientX - offset.value;
+  
+  function handleMouseMove(e: MouseEvent) {
+    if (!isDragging.value || !timelineRef.value) return;
+    const deltaX = e.clientX - startX;
+    updateTimeFromOffset(deltaX);
+  }
+  
+  function handleMouseUp() {
+    isDragging.value = false;
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+  }
+  
   document.addEventListener('mousemove', handleMouseMove);
   document.addEventListener('mouseup', handleMouseUp);
 }
 
 function handleTouchStart(e: TouchEvent) {
   isDragging.value = true;
-  startX.value = e.touches[0].clientX - offset.value;
+  const startX = e.touches[0].clientX - offset.value;
+  
+  function handleTouchMove(e: TouchEvent) {
+    if (!isDragging.value || !timelineRef.value) return;
+    const deltaX = e.touches[0].clientX - startX;
+    updateTimeFromOffset(deltaX);
+  }
+  
+  function handleTouchEnd() {
+    isDragging.value = false;
+    document.removeEventListener('touchmove', handleTouchMove);
+    document.removeEventListener('touchend', handleTouchEnd);
+  }
+  
   document.addEventListener('touchmove', handleTouchMove);
   document.addEventListener('touchend', handleTouchEnd);
-}
-
-function handleMouseMove(e: MouseEvent) {
-  if (!isDragging.value || !timelineRef.value) return;
-  const deltaX = e.clientX - startX.value;
-  updateTimeFromOffset(deltaX);
-}
-
-function handleTouchMove(e: TouchEvent) {
-  if (!isDragging.value || !timelineRef.value) return;
-  const deltaX = e.touches[0].clientX - startX.value;
-  updateTimeFromOffset(deltaX);
-}
-
-function handleMouseUp() {
-  isDragging.value = false;
-  document.removeEventListener('mousemove', handleMouseMove);
-  document.removeEventListener('mouseup', handleMouseUp);
-}
-
-function handleTouchEnd() {
-  isDragging.value = false;
-  document.removeEventListener('touchmove', handleTouchMove);
-  document.removeEventListener('touchend', handleTouchEnd);
 }
 
 function updateTimeFromOffset(newOffset: number) {
   if (!timelineRef.value) return;
   
   const width = timelineRef.value.offsetWidth;
-  const hourWidth = width / 24;
+  const hourWidth = width / 8; // Ajustado para coincidir con el espaciado
   
   // Calculate the time based on the offset
   const hours = -(newOffset - width / 2) / hourWidth;
@@ -200,13 +228,12 @@ function updateTimeFromOffset(newOffset: number) {
   // Update the offset
   offset.value = newOffset;
   
+  // If we've scrolled too far, reset the offset but keep the time
+  if (Math.abs(offset.value) > width) {
+    offset.value = offset.value % width;
+  }
+  
   emit('update', newDate);
-}
-
-function shouldShowHourMobile(hour: number): boolean {
-  const normalizedHour = (hour - 24) % 24;
-  // En móvil, mostrar solo las horas pares
-  return normalizedHour % 2 === 0;
 }
 
 // Watch for changes in selectedDate and recenter the timeline
@@ -214,6 +241,7 @@ watch(() => props.selectedDate, () => {
   centerTimelineOnCurrentHour();
 }, { immediate: true });
 
+// Initialize the timeline position
 onMounted(() => {
   centerTimelineOnCurrentHour();
 });

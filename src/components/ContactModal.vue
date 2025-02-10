@@ -3,7 +3,7 @@
     <div class="card max-w-md w-full max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-semibold text-[var(--text-primary)]">
-          {{ props.contact ? 'Edit Contact' : 'Add Contact' }}
+          {{ props.contact ? $t('contacts.edit') : $t('contacts.addNew') }}
         </h2>
         <button
           @click="$emit('close')"
@@ -16,7 +16,7 @@
       <form @submit.prevent="handleSubmit" class="space-y-6">
         <div>
           <label for="name" class="block text-sm font-medium text-[var(--text-secondary)] mb-1">
-            Name
+            {{ $t('contacts.name') }}
           </label>
           <input
             id="name"
@@ -29,7 +29,7 @@
 
         <div>
           <label for="email" class="block text-sm font-medium text-[var(--text-secondary)] mb-1">
-            Email
+            {{ $t('contacts.email') }}
           </label>
           <input
             id="email"
@@ -42,7 +42,7 @@
 
         <div>
           <label for="phone" class="block text-sm font-medium text-[var(--text-secondary)] mb-1">
-            Phone (optional)
+            {{ $t('contacts.phone') }}
           </label>
           <input
             id="phone"
@@ -54,7 +54,7 @@
 
         <div>
           <label for="timezone" class="block text-sm font-medium text-[var(--text-secondary)] mb-1">
-            Timezone
+            {{ $t('contacts.timezone') }}
           </label>
           <select
             id="timezone"
@@ -62,7 +62,7 @@
             required
             class="input"
           >
-            <option value="">Select a timezone</option>
+            <option value="">{{ $t('contacts.selectTimezone') }}</option>
             <option v-for="tz in timezones" :key="tz" :value="tz">
               {{ tz }}
             </option>
@@ -71,7 +71,7 @@
 
         <div>
           <label for="location" class="block text-sm font-medium text-[var(--text-secondary)] mb-1">
-            Location (optional)
+            {{ $t('contacts.location') }}
           </label>
           <input
             id="location"
@@ -83,7 +83,7 @@
 
         <div>
           <label for="notes" class="block text-sm font-medium text-[var(--text-secondary)] mb-1">
-            Notes (optional)
+            {{ $t('contacts.notes') }}
           </label>
           <textarea
             id="notes"
@@ -99,13 +99,13 @@
             @click="$emit('close')"
             class="btn btn-secondary"
           >
-            Cancel
+            {{ $t('common.cancel') }}
           </button>
           <button
             type="submit"
             class="btn btn-primary"
           >
-            {{ props.contact ? 'Update' : 'Add' }} Contact
+            {{ props.contact ? $t('common.update') : $t('common.add') }}
           </button>
         </div>
       </form>

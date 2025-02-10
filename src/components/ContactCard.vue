@@ -3,18 +3,20 @@
     <div class="flex justify-between items-start mb-4">
       <div>
         <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ contact.name }}</h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400">{{ contact.location || 'No location set' }}</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">{{ contact.location || $t('contacts.noLocation') }}</p>
       </div>
       <div class="flex gap-2">
         <button
           @click="emit('edit', contact)"
           class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+          :title="$t('person.edit')"
         >
           <Edit class="w-5 h-5" />
         </button>
         <button
           @click="emit('delete', contact.id)"
           class="text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          :title="$t('person.delete')"
         >
           <Trash2 class="w-5 h-5" />
         </button>
@@ -57,14 +59,14 @@
       <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400">
         <Timer class="w-4 h-4" />
         <span class="text-xs">
-          {{ availability.state.timeUntilNextStatus }} until status change
+          {{ availability.state.timeUntilNextStatus }} {{ $t('contacts.untilStatusChange') }}
         </span>
       </div>
 
       <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400">
         <Globe2 class="w-4 h-4" />
         <span class="text-xs">
-          {{ availability.state.localTime }} your time
+          {{ availability.state.localTime }} {{ $t('contacts.yourTime') }}
         </span>
       </div>
     </div>
@@ -75,7 +77,7 @@
 
     <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
       <div class="text-xs text-gray-500 dark:text-gray-400">
-        Time zone: {{ contact.timezone }}
+        {{ $t('contacts.timezone') }}: {{ contact.timezone }}
       </div>
     </div>
   </div>

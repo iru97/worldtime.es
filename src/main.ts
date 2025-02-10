@@ -23,11 +23,12 @@ const i18n = createI18n({
   locale: defaultLocale,
   fallbackLocale: 'en',
   messages,
+  globalInjection: true,
+  useScope: 'global'
 });
 
-app
-  .use(router)
-  .use(i18n);
+app.use(router);
+app.use(i18n);
 
 // Initialize auth store before mounting
 authStore.initialize().then(() => {

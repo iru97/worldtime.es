@@ -4,15 +4,15 @@
       <div class="text-center mb-8">
         <div class="flex items-center justify-center gap-3 mb-4">
           <Users class="w-12 h-12 text-indigo-600" />
-          <h1 class="text-3xl font-bold text-gray-800">{{ t('app.title') }}</h1>
+          <h1 class="text-3xl font-bold text-gray-800">{{ $t('app.title') }}</h1>
         </div>
-        <p class="text-gray-600">{{ t('app.description') }}</p>
+        <p class="text-gray-600">{{ $t('app.description') }}</p>
       </div>
 
       <form @submit.prevent="handleEmailSubmit" class="space-y-6">
         <div>
           <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
-            {{ t('auth.email.label') }}
+            {{ $t('auth.email.label') }}
           </label>
           <input
             id="email"
@@ -20,7 +20,7 @@
             type="email"
             required
             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            :placeholder="t('auth.email.placeholder').replace('{at}', '@')"
+            :placeholder="$t('auth.email.placeholder').replace('{at}', '@')"
           />
         </div>
 
@@ -31,7 +31,7 @@
         >
           <Loader2 v-if="loading" class="w-5 h-5 animate-spin" />
           <Mail v-else class="w-5 h-5" />
-          <span>{{ loading ? t('auth.sendingLink') : t('auth.continueWithEmail') }}</span>
+          <span>{{ loading ? $t('auth.sendingLink') : $t('auth.continueWithEmail') }}</span>
         </button>
       </form>
 
@@ -40,7 +40,7 @@
           <div class="w-full border-t border-gray-300"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-2 bg-white text-gray-500">{{ t('auth.or') }}</span>
+          <span class="px-2 bg-white text-gray-500">{{ $t('auth.or') }}</span>
         </div>
       </div>
 
@@ -50,18 +50,18 @@
         class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
       >
         <Chrome class="w-5 h-5" />
-        {{ t('auth.continueWithGoogle') }}
+        {{ $t('auth.continueWithGoogle') }}
       </button>
 
       <div class="mt-6">
         <p class="text-sm text-center text-gray-500">
-          {{ t('auth.termsNotice') }}
+          {{ $t('auth.termsNotice') }}
           <RouterLink to="/terms" class="text-indigo-600 hover:text-indigo-500">
-            {{ t('auth.terms') }}
+            {{ $t('auth.terms') }}
           </RouterLink>
-          {{ t('auth.and') }}
+          {{ $t('auth.and') }}
           <RouterLink to="/privacy" class="text-indigo-600 hover:text-indigo-500">
-            {{ t('auth.privacy') }}
+            {{ $t('auth.privacy') }}
           </RouterLink>
         </p>
       </div>
@@ -72,7 +72,7 @@
           class="text-indigo-600 hover:text-indigo-500 text-sm flex items-center justify-center gap-2"
         >
           <ArrowLeft class="w-4 h-4" />
-          {{ t('nav.back') }}
+          {{ $t('nav.back') }}
         </RouterLink>
       </div>
     </div>
@@ -81,12 +81,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { Users, Loader2, Chrome, Mail, ArrowLeft } from 'lucide-vue-next';
 import { useAuthStore } from '@/stores/auth';
 import { useNotificationStore } from '@/stores/notifications';
 
-const { t } = useI18n();
 const authStore = useAuthStore();
 const notificationStore = useNotificationStore();
 const email = ref('');

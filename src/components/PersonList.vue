@@ -38,14 +38,14 @@
           <button
             @click="emit('edit', person)"
             class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-            :title="t('person.edit')"
+            :title="$t('person.edit')"
           >
             <Edit class="w-5 h-5" />
           </button>
           <button
             @click="emit('delete', person.id)"
             class="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
-            :title="t('person.delete')"
+            :title="$t('person.delete')"
           >
             <Trash2 class="w-5 h-5" />
           </button>
@@ -57,12 +57,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 import type { Person } from '@/types';
 import { Clock, Edit, Trash2 } from 'lucide-vue-next';
 import { useContactAvailability } from '@/composables/useContactAvailability';
-
-const { t } = useI18n();
 
 const props = defineProps<{
   people: Person[];
