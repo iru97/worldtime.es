@@ -22,8 +22,8 @@ export const messages = {
     // Auth
     'auth.signIn': 'Iniciar sesión',
     'auth.signOut': 'Cerrar sesión',
-    'auth.email': 'Correo electrónico',
-    'auth.emailPlaceholder': 'correo@ejemplo.com',
+    'auth.email.label': 'Correo electrónico',
+    'auth.email.placeholder': 'correo{at}ejemplo.com',
     'auth.continueWithEmail': 'Continuar con correo electrónico',
     'auth.continueWithGoogle': 'Continuar con Google',
     'auth.sendingLink': 'Enviando enlace mágico...',
@@ -102,8 +102,8 @@ export const messages = {
     // Auth
     'auth.signIn': 'Sign in',
     'auth.signOut': 'Sign out',
-    'auth.email': 'Email',
-    'auth.emailPlaceholder': 'email@example.com',
+    'auth.email.label': 'Email',
+    'auth.email.placeholder': 'email{at}example.com',
     'auth.continueWithEmail': 'Continue with email',
     'auth.continueWithGoogle': 'Continue with Google',
     'auth.sendingLink': 'Sending magic link...',

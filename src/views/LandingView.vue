@@ -4,7 +4,7 @@
     <nav class="absolute top-0 left-0 right-0 z-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
-          <div class="flex items-center gap-2">
+          <div class="bg-[var(--card-bg)] shadow-sm border border-[var(--card-border)] rounded-lg px-4 py-2 flex items-center gap-2">
             <Clock class="w-6 h-6 text-[var(--accent-primary)]" />
             <span class="text-lg font-bold text-[var(--text-primary)]">{{ t('app.title') }}</span>
           </div>
