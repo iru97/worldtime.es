@@ -69,7 +69,7 @@
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
-      <div class="space-y-4">
+      <div class="space-y-6">
         <!-- Timeline View -->
         <Timeline
           v-if="view === 'timeline'"
@@ -83,7 +83,14 @@
         </div>
 
         <div v-else class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <TimeCard
+            v-if="view === 'timeline'"
+            v-for="contact in contactsStore.contacts"
+            :key="contact.id"
+            :contact="contact"
+          />
           <ContactCard
+            v-else
             v-for="contact in contactsStore.contacts"
             :key="contact.id"
             :contact="contact"
@@ -118,6 +125,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { Users, Clock, List, UserCircle, LogOut, Menu, Plus, Loader2 } from 'lucide-vue-next';
 import Timeline from '@/components/Timeline.vue';
+import TimeCard from '@/components/TimeCard.vue';
 import ContactCard from '@/components/ContactCard.vue';
 import ContactModal from '@/components/ContactModal.vue';
 import MobileDrawer from '@/components/MobileDrawer.vue';
