@@ -1,8 +1,9 @@
-# WorldTime
-
-A powerful web application for seamless global team coordination and time zone management. WorldTime helps you stay connected with your international contacts by providing real-time visibility of their local time, availability, and work schedules.
 
 ![worldtime-logo](https://github.com/user-attachments/assets/1343ff5f-0915-41eb-b79b-f7a1147fc415)
+---
+A powerful web application for seamless global team coordination and time zone management. WorldTime helps you stay connected with your international contacts by providing real-time visibility of their local time, availability, and work schedules.
+
+
 
 
 ## Features
