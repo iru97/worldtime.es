@@ -188,6 +188,57 @@
           {{ $t('landing.demo.title') }}
         </h2>
         <div class="card p-8">
+          <!-- Timezone Selector -->
+          <div class="relative mb-8">
+            <input
+              id="timezone-search"
+              v-model="searchQuery"
+              type="text"
+              class="input pr-10"
+              :placeholder="$t('contacts.selectTimezone')"
+              @focus="showDropdown = true"
+              @input="handleSearch"
+            />
+            <button
+              type="button"
+              class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              @click="toggleDropdown"
+            >
+              <ChevronDown
+                class="w-5 h-5 transition-transform"
+                :class="{ 'rotate-180': showDropdown }"
+              />
+            </button>
+
+            <!-- Dropdown -->
+            <div
+              v-if="showDropdown"
+              class="absolute z-50 mt-1 w-full max-h-60 overflow-auto bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg shadow-lg"
+            >
+              <div v-if="filteredTimezones.length === 0" class="p-4 text-[var(--text-secondary)] text-center">
+                No results found
+              </div>
+              <button
+                v-for="tz in filteredTimezones"
+                :key="tz"
+                type="button"
+                class="w-full px-4 py-2 text-left hover:bg-[var(--accent-bg)] transition-colors"
+                :class="{ 'bg-[var(--accent-bg)]': selectedTimezone === tz }"
+                @click="selectTimezone(tz)"
+              >
+                <div class="flex flex-col">
+                  <span class="font-medium text-[var(--text-primary)]">
+                    {{ formatCity(tz) }}
+                  </span>
+                  <span class="text-sm text-[var(--text-secondary)] flex items-center gap-2">
+                    <Clock class="w-4 h-4" />
+                    {{ getCurrentTime(tz) }} - {{ tz }}
+                  </span>
+                </div>
+              </button>
+            </div>
+          </div>
+
           <Timeline
             :selected-date="selectedDate"
             @update="handleTimelineUpdate"
@@ -230,8 +281,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Clock, Users2, CalendarClock, Plane, MessageSquare, Timer, Menu } from 'lucide-vue-next';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { Clock, Users2, CalendarClock, Plane, MessageSquare, Timer, Menu, ChevronDown } from 'lucide-vue-next';
 import Timeline from '@/components/Timeline.vue';
 import PersonCard from '@/components/PersonCard.vue';
 import AppFooter from '@/components/AppFooter.vue';
@@ -245,6 +296,24 @@ const selectedDate = ref(new Date());
 const timeService = new TimeService();
 const showMobileMenu = ref(false);
 
+// Timezone selector
+const timezones = ref<string[]>([]);
+const searchQuery = ref('');
+const showDropdown = ref(false);
+const selectedTimezone = ref(Intl.DateTimeFormat().resolvedOptions().timeZone);
+
+// Update search query with initial timezone
+searchQuery.value = formatCity(selectedTimezone.value);
+
+const filteredTimezones = computed(() => {
+  const query = searchQuery.value.toLowerCase();
+  return timezones.value.filter(tz => {
+    const city = formatCity(tz).toLowerCase();
+    const fullTz = tz.toLowerCase();
+    return city.includes(query) || fullTz.includes(query);
+  });
+});
+
 const demoTeam = [
   { id: 1, name: 'Sarah Johnson', timezone: 'America/New_York' },
   { id: 2, name: 'Alex Chen', timezone: 'Asia/Tokyo' },
@@ -255,10 +324,63 @@ const demoTeam = [
 ];
 
 function handleTimelineUpdate(date: Date) {
-  selectedDate.value = date;
+  selectedDate.value = new Date(date.getTime() + getTimezoneOffset(selectedTimezone.value));
 }
 
 function formatTime(date: Date, timezone: string): string {
   return timeService.formatTime(date, timezone, 'en');
 }
+
+function formatCity(timezone: string): string {
+  return timezone.split('/').pop()?.replace(/_/g, ' ') || timezone;
+}
+
+function getCurrentTime(timezone: string): string {
+  return new Date().toLocaleTimeString('en-US', {
+    timeZone: timezone,
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+}
+
+function handleSearch() {
+  showDropdown.value = true;
+}
+
+function selectTimezone(timezone: string) {
+  selectedTimezone.value = timezone;
+  searchQuery.value = formatCity(timezone);
+  showDropdown.value = false;
+  
+  // Adjust the selected date to the new timezone
+  const now = new Date();
+  selectedDate.value = new Date(now.getTime() + getTimezoneOffset(timezone));
+}
+
+function toggleDropdown() {
+  showDropdown.value = !showDropdown.value;
+}
+
+function handleClickOutside(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+  if (!target.closest('#timezone-search')) {
+    showDropdown.value = false;
+  }
+}
+
+function getTimezoneOffset(timezone: string): number {
+  const localDate = new Date();
+  const tzDate = new Date(localDate.toLocaleString('en-US', { timeZone: timezone }));
+  return tzDate.getTime() - localDate.getTime();
+}
+
+onMounted(() => {
+  timezones.value = timeService.getTimezones();
+  document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 </script>
