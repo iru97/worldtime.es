@@ -26,6 +26,25 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/scheduling',
+      component: () => import('@/views/SchedulingView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/book/:userId/:slug',
+      component: () => import('@/views/PublicBookingView.vue'),
+      meta: { requiresGuest: false },
+    },
+    {
+      path: '/poll/:slug',
+      component: () => import('@/views/PublicPollView.vue'),
+      meta: { requiresGuest: false },
+    },
+    {
+      path: '/auth/google/callback',
+      component: () => import('@/views/GoogleCallbackView.vue'),
+    },
+    {
       path: '/privacy',
       component: () => import('@/views/PrivacyPolicyView.vue'),
     },
