@@ -471,6 +471,15 @@ export const messages = {
     'scheduling.allowMaybe': 'Allow "maybe" votes',
     'scheduling.allowComments': 'Allow participants to add comments',
     'scheduling.anonymousPoll': 'Anonymous voting (hide voter names)',
-    'scheduling.deadline': 'Voting deadline (optional)'
+    'scheduling.deadline': 'Voting deadline (optional)',
+
+    // Team Calendar
+    'teamCalendar.title': 'Team Calendar',
+    'teamCalendar.selectContacts': 'Select team members to compare',
+    'teamCalendar.contact': 'Contact',
+    'teamCalendar.you': 'You',
+    'teamCalendar.legend': 'Legend',
+    'teamCalendar.currentHour': 'Current hour',
+    'teamCalendar.bestTimes': 'Best Meeting Times'
   }
 };

@@ -31,6 +31,11 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/team-calendar',
+      component: () => import('@/views/TeamCalendarView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/book/:userId/:slug',
       component: () => import('@/views/PublicBookingView.vue'),
       meta: { requiresGuest: false },
