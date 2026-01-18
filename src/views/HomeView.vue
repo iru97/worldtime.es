@@ -46,6 +46,16 @@
               <CalendarClock class="w-5 h-5" aria-hidden="true" />
             </button>
 
+            <!-- Scheduling -->
+            <RouterLink
+              to="/scheduling"
+              class="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              :aria-label="$t('scheduling.title')"
+              :title="$t('scheduling.title')"
+            >
+              <CalendarRange class="w-5 h-5" aria-hidden="true" />
+            </RouterLink>
+
             <!-- Import/Export -->
             <div class="relative">
               <button
@@ -324,7 +334,7 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import {
   Users, Clock, List, Menu, UserCircle, LogOut, UserPlus,
-  Loader2, Search, X, CalendarClock, MoreVertical, Upload, Download, FolderOpen
+  Loader2, Search, X, CalendarClock, MoreVertical, Upload, Download, FolderOpen, CalendarRange
 } from 'lucide-vue-next';
 import type { Contact } from '@/types';
 import { TimeService } from '@/services/TimeService';
