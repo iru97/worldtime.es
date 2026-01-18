@@ -15,20 +15,24 @@
           <!-- Desktop Actions -->
           <div class="hidden sm:flex items-center gap-4">
             <!-- View Toggle -->
-            <div class="flex items-center gap-1 bg-[var(--accent-bg)] rounded-lg p-1">
+            <div class="flex items-center gap-1 bg-[var(--accent-bg)] rounded-lg p-1" role="group" :aria-label="$t('nav.view')">
               <button
                 @click="view = 'timeline'"
                 class="p-2 rounded-md transition-colors"
                 :class="view === 'timeline' ? 'bg-white text-[var(--accent-text)] shadow-sm' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'"
+                :aria-label="$t('nav.timeline')"
+                :aria-pressed="view === 'timeline'"
               >
-                <Clock class="w-5 h-5" />
+                <Clock class="w-5 h-5" aria-hidden="true" />
               </button>
               <button
                 @click="view = 'list'"
                 class="p-2 rounded-md transition-colors"
                 :class="view === 'list' ? 'bg-white text-[var(--accent-text)] shadow-sm' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'"
+                :aria-label="$t('nav.list')"
+                :aria-pressed="view === 'list'"
               >
-                <List class="w-5 h-5" />
+                <List class="w-5 h-5" aria-hidden="true" />
               </button>
             </div>
 
@@ -38,15 +42,17 @@
             <RouterLink
               to="/profile"
               class="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              :aria-label="$t('nav.profile')"
             >
-              <UserCircle class="w-5 h-5" />
+              <UserCircle class="w-5 h-5" aria-hidden="true" />
             </RouterLink>
-            
+
             <button
               @click="handleSignOut"
               class="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              :aria-label="$t('nav.signOut')"
             >
-              <LogOut class="w-5 h-5" />
+              <LogOut class="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
 
@@ -54,8 +60,10 @@
           <button
             class="sm:hidden p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             @click="showMobileMenu = true"
+            :aria-label="$t('nav.menu')"
+            aria-haspopup="true"
           >
-            <Menu class="w-6 h-6" />
+            <Menu class="w-6 h-6" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -70,33 +78,100 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
       <div class="space-y-6">
-        <!-- Add Contact Button -->
-        <div class="flex justify-end">
+        <!-- Search and Add Contact -->
+        <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
+          <!-- Search Input -->
+          <div class="relative flex-1 max-w-md">
+            <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-tertiary)]" aria-hidden="true" />
+            <input
+              v-model="searchQuery"
+              type="text"
+              :placeholder="$t('contacts.search')"
+              class="w-full pl-10 pr-4 py-2 border border-[var(--card-border)] rounded-lg bg-[var(--card-bg)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent"
+              :aria-label="$t('contacts.search')"
+            />
+            <button
+              v-if="searchQuery"
+              @click="searchQuery = ''"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)]"
+              :aria-label="$t('common.cancel')"
+            >
+              <X class="w-4 h-4" aria-hidden="true" />
+            </button>
+          </div>
+
           <button
             @click="showContactModal = true"
-            class="btn btn-primary flex items-center gap-2"
+            class="btn btn-primary flex items-center justify-center gap-2"
           >
-            <UserPlus class="w-5 h-5" />
+            <UserPlus class="w-5 h-5" aria-hidden="true" />
             {{ $t('contacts.addNew') }}
           </button>
         </div>
 
         <!-- Timeline View -->
         <Timeline
-          v-if="view === 'timeline'"
+          v-if="view === 'timeline' && filteredContacts.length > 0"
           :selected-date="selectedDate"
           @update="handleTimeUpdate"
         />
 
         <!-- Contact List -->
         <div v-if="contactsStore.loading" class="flex justify-center py-8">
-          <Loader2 class="w-8 h-8 text-[var(--accent-primary)] animate-spin" />
+          <Loader2 class="w-8 h-8 text-[var(--accent-primary)] animate-spin" aria-label="Loading" />
         </div>
 
+        <!-- Empty State -->
+        <div
+          v-else-if="contactsStore.contacts.length === 0"
+          class="card p-12 text-center"
+        >
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--accent-bg)] flex items-center justify-center">
+            <Users class="w-8 h-8 text-[var(--accent-primary)]" aria-hidden="true" />
+          </div>
+          <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-2">
+            {{ $t('contacts.empty.title') }}
+          </h3>
+          <p class="text-[var(--text-secondary)] mb-6 max-w-sm mx-auto">
+            {{ $t('contacts.empty.description') }}
+          </p>
+          <button
+            @click="showContactModal = true"
+            class="btn btn-primary inline-flex items-center gap-2"
+          >
+            <UserPlus class="w-5 h-5" aria-hidden="true" />
+            {{ $t('contacts.addNew') }}
+          </button>
+        </div>
+
+        <!-- No Results State -->
+        <div
+          v-else-if="filteredContacts.length === 0 && searchQuery"
+          class="card p-12 text-center"
+        >
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--accent-bg)] flex items-center justify-center">
+            <Search class="w-8 h-8 text-[var(--accent-primary)]" aria-hidden="true" />
+          </div>
+          <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-2">
+            {{ $t('contacts.noResults') }}
+          </h3>
+          <p class="text-[var(--text-secondary)] mb-6">
+            "{{ searchQuery }}"
+          </p>
+          <button
+            @click="searchQuery = ''"
+            class="btn btn-secondary inline-flex items-center gap-2"
+          >
+            <X class="w-5 h-5" aria-hidden="true" />
+            {{ $t('common.cancel') }}
+          </button>
+        </div>
+
+        <!-- Contact List Content -->
         <div v-else>
           <div v-if="view === 'timeline'" class="space-y-4">
             <TimeCard
-              v-for="contact in contactsStore.contacts"
+              v-for="contact in filteredContacts"
               :key="contact.id"
               :name="contact.name"
               :timezone="contact.timezone"
@@ -105,7 +180,7 @@
           </div>
           <div v-else class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <ContactCard
-              v-for="contact in contactsStore.contacts"
+              v-for="contact in filteredContacts"
               :key="contact.id"
               :contact="contact"
               @edit="handleEditContact"
@@ -127,9 +202,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { Users, Clock, List, Menu, UserCircle, LogOut, UserPlus, Loader2 } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
+import { Users, Clock, List, Menu, UserCircle, LogOut, UserPlus, Loader2, Search, X } from 'lucide-vue-next';
 import type { Contact } from '@/types';
 import { TimeService } from '@/services/TimeService';
 import { useAuthStore } from '@/stores/auth';
@@ -143,6 +219,7 @@ import ThemeToggle from '@/components/ThemeToggle.vue';
 import LanguageSelector from '@/components/LanguageSelector.vue';
 import MobileDrawer from '@/components/MobileDrawer.vue';
 
+const { t } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
 const contactsStore = useContactsStore();
@@ -154,6 +231,25 @@ const selectedDate = ref(new Date());
 const showMobileMenu = ref(false);
 const showContactModal = ref(false);
 const selectedContact = ref<Contact | null>(null);
+const searchQuery = ref('');
+
+// Filter contacts based on search query
+const filteredContacts = computed(() => {
+  if (!searchQuery.value.trim()) {
+    return contactsStore.contacts;
+  }
+
+  const query = searchQuery.value.toLowerCase().trim();
+  return contactsStore.contacts.filter((contact) => {
+    return (
+      contact.name.toLowerCase().includes(query) ||
+      contact.email.toLowerCase().includes(query) ||
+      contact.timezone.toLowerCase().includes(query) ||
+      (contact.location && contact.location.toLowerCase().includes(query)) ||
+      (contact.phone && contact.phone.includes(query))
+    );
+  });
+});
 
 onMounted(async () => {
   await contactsStore.fetchContacts();
@@ -178,11 +274,11 @@ function handleEditContact(contact: Contact) {
 }
 
 async function handleDeleteContact(id: string) {
-  if (!confirm($t('contacts.deleteConfirm'))) return;
+  if (!confirm(t('contacts.deleteConfirm'))) return;
 
   const { success } = await contactsStore.deleteContact(id);
   if (success) {
-    notificationStore.add('success', 'Contact deleted successfully');
+    notificationStore.add('success', t('profile.updateSuccess'));
   }
 }
 
@@ -195,16 +291,15 @@ async function handleSubmitContact(contact: Partial<Contact>) {
   if (selectedContact.value) {
     const { success } = await contactsStore.updateContact(selectedContact.value.id, contact);
     if (success) {
-      notificationStore.add('success', 'Contact updated successfully');
+      notificationStore.add('success', t('profile.updateSuccess'));
       handleCloseModal();
     }
   } else {
     const { success } = await contactsStore.addContact(contact);
     if (success) {
-      notificationStore.add('success', 'Contact added successfully');
+      notificationStore.add('success', t('profile.updateSuccess'));
       handleCloseModal();
     }
   }
 }
 </script>
-```

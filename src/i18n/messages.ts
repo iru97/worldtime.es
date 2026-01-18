@@ -92,10 +92,34 @@ export const messages = {
     'contacts.untilStatusChange': 'hasta cambio de estado',
     'contacts.yourTime': 'tu hora',
     'contacts.deleteConfirm': '¿Estás seguro de que quieres eliminar este contacto?',
+    'contacts.search': 'Buscar contactos...',
+    'contacts.noResults': 'No se encontraron contactos',
+    'contacts.empty.title': 'Sin contactos aún',
+    'contacts.empty.description': 'Añade tu primer contacto para empezar a gestionar zonas horarias',
+
+    // Status
+    'status.working': 'Trabajando',
+    'status.sleeping': 'Probablemente durmiendo',
+    'status.free': 'Tiempo libre',
 
     // Person
     'person.edit': 'Editar contacto',
-    'person.delete': 'Eliminar contacto'
+    'person.delete': 'Eliminar contacto',
+
+    // Profile
+    'profile.title': 'Ajustes de perfil',
+    'profile.backToContacts': 'Volver a contactos',
+    'profile.email': 'Correo electrónico',
+    'profile.defaultTimezone': 'Zona horaria predeterminada',
+    'profile.language': 'Idioma',
+    'profile.saveChanges': 'Guardar cambios',
+    'profile.saving': 'Guardando...',
+    'profile.dangerZone': 'Zona de peligro',
+    'profile.deleteAccount': 'Eliminar cuenta',
+    'profile.deleteConfirm': '¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.',
+    'profile.updateSuccess': 'Perfil actualizado correctamente',
+    'profile.updateError': 'Error al actualizar el perfil',
+    'profile.deleteError': 'Error al eliminar la cuenta'
   },
   en: {
     'app.title': 'WorldTime',
@@ -190,9 +214,33 @@ export const messages = {
     'contacts.untilStatusChange': 'until status change',
     'contacts.yourTime': 'your time',
     'contacts.deleteConfirm': 'Are you sure you want to delete this contact?',
+    'contacts.search': 'Search contacts...',
+    'contacts.noResults': 'No contacts found',
+    'contacts.empty.title': 'No contacts yet',
+    'contacts.empty.description': 'Add your first contact to start managing time zones',
+
+    // Status
+    'status.working': 'Working',
+    'status.sleeping': 'Probably sleeping',
+    'status.free': 'Free time',
 
     // Person
     'person.edit': 'Edit contact',
-    'person.delete': 'Delete contact'
+    'person.delete': 'Delete contact',
+
+    // Profile
+    'profile.title': 'Profile Settings',
+    'profile.backToContacts': 'Back to Contacts',
+    'profile.email': 'Email',
+    'profile.defaultTimezone': 'Default Timezone',
+    'profile.language': 'Language',
+    'profile.saveChanges': 'Save Changes',
+    'profile.saving': 'Saving...',
+    'profile.dangerZone': 'Danger Zone',
+    'profile.deleteAccount': 'Delete Account',
+    'profile.deleteConfirm': 'Are you sure you want to delete your account? This action cannot be undone.',
+    'profile.updateSuccess': 'Profile updated successfully',
+    'profile.updateError': 'Failed to update profile',
+    'profile.deleteError': 'Failed to delete account'
   }
 };

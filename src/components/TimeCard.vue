@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import { Clock, Timer, Globe2 } from 'lucide-vue-next';
 import { useContactAvailability } from '@/composables/useContactAvailability';
+import { formatTimezone } from '@/utils/timezone';
 
 const props = defineProps<{
   name: string;
@@ -37,8 +38,4 @@ const props = defineProps<{
 }>();
 
 const availability = useContactAvailability(props.timezone);
-
-function formatTimezone(timezone: string): string {
-  return timezone.split('/')[1].replace(/_/g, ' ');
-}
 </script>

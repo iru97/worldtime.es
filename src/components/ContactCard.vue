@@ -13,15 +13,17 @@
           @click="emit('edit', contact)"
           class="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-lg"
           :title="$t('person.edit')"
+          :aria-label="$t('person.edit')"
         >
-          <Edit class="w-5 h-5" />
+          <Edit class="w-5 h-5" aria-hidden="true" />
         </button>
         <button
           @click="emit('delete', contact.id)"
           class="p-2 text-[var(--text-secondary)] hover:text-[var(--danger)] transition-colors rounded-lg"
           :title="$t('person.delete')"
+          :aria-label="$t('person.delete')"
         >
-          <Trash2 class="w-5 h-5" />
+          <Trash2 class="w-5 h-5" aria-hidden="true" />
         </button>
       </div>
     </div>

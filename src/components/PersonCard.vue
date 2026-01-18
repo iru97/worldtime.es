@@ -17,6 +17,8 @@
 </template>
 
 <script setup lang="ts">
+import { formatTimezone } from '@/utils/timezone';
+
 defineProps<{
   name: string;
   timezone: string;
@@ -24,8 +26,4 @@ defineProps<{
   fullWidth?: boolean;
   rotate?: 'left' | 'right' | 'slight-left' | 'slight-right' | 'slight-left-2';
 }>();
-
-function formatTimezone(timezone: string): string {
-  return timezone.split('/')[1].replace(/_/g, ' ');
-}
 </script>
