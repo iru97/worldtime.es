@@ -112,6 +112,9 @@ export const messages = {
     'profile.email': 'Correo electrónico',
     'profile.defaultTimezone': 'Zona horaria predeterminada',
     'profile.language': 'Idioma',
+    'profile.timeFormat': 'Formato de hora',
+    'profile.timeFormat12h': '12 horas (AM/PM)',
+    'profile.timeFormat24h': '24 horas',
     'profile.saveChanges': 'Guardar cambios',
     'profile.saving': 'Guardando...',
     'profile.dangerZone': 'Zona de peligro',
@@ -119,7 +122,76 @@ export const messages = {
     'profile.deleteConfirm': '¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.',
     'profile.updateSuccess': 'Perfil actualizado correctamente',
     'profile.updateError': 'Error al actualizar el perfil',
-    'profile.deleteError': 'Error al eliminar la cuenta'
+    'profile.deleteError': 'Error al eliminar la cuenta',
+
+    // Error
+    'error.title': 'Algo salió mal',
+    'error.description': 'Hubo un error inesperado. Por favor, inténtalo de nuevo.',
+    'error.retry': 'Reintentar',
+    'error.goHome': 'Ir al inicio',
+
+    // Import/Export
+    'import.title': 'Importar contactos',
+    'import.description': 'Importa contactos desde un archivo CSV o JSON',
+    'import.selectFile': 'Seleccionar archivo',
+    'import.success': 'Contactos importados correctamente',
+    'import.error': 'Error al importar contactos',
+    'export.title': 'Exportar contactos',
+    'export.description': 'Exporta tus contactos a CSV o JSON',
+    'export.csv': 'Exportar como CSV',
+    'export.json': 'Exportar como JSON',
+    'export.success': 'Contactos exportados correctamente',
+
+    // Working Hours
+    'workingHours.title': 'Horario laboral',
+    'workingHours.start': 'Hora de inicio',
+    'workingHours.end': 'Hora de fin',
+    'workingHours.default': 'Usar predeterminado (9:00 - 17:00)',
+
+    // Meeting Finder
+    'meeting.title': 'Encontrar mejor hora',
+    'meeting.description': 'Encuentra la mejor hora para reunirte con tus contactos',
+    'meeting.selectContacts': 'Seleccionar contactos',
+    'meeting.duration': 'Duración',
+    'meeting.findTime': 'Buscar horarios',
+    'meeting.noOverlap': 'No hay horarios disponibles donde todos estén en horario laboral',
+    'meeting.bestTimes': 'Mejores horarios',
+
+    // Groups
+    'groups.title': 'Grupos',
+    'groups.description': 'Organiza tus contactos en grupos',
+    'groups.add': 'Añadir',
+    'groups.edit': 'Editar grupo',
+    'groups.delete': 'Eliminar grupo',
+    'groups.newGroupPlaceholder': 'Nombre del nuevo grupo',
+    'groups.changeColor': 'Cambiar color',
+    'groups.empty': 'No hay grupos todavía',
+    'groups.contacts': 'contactos',
+    'groups.all': 'Todos',
+    'groups.ungrouped': 'Sin grupo',
+    'groups.manage': 'Gestionar grupos',
+    'groups.selectGroup': 'Seleccionar grupo (opcional)',
+    'groups.noGroup': 'Sin grupo',
+
+    // Onboarding
+    'onboarding.welcome.title': 'Bienvenido a WorldTime',
+    'onboarding.welcome.description': 'Tu herramienta para gestionar contactos en diferentes zonas horarias y coordinar reuniones globales.',
+    'onboarding.contacts.title': 'Añade tus contactos',
+    'onboarding.contacts.description': 'Añade contactos de tu equipo con sus zonas horarias para ver su hora local actual y su disponibilidad.',
+    'onboarding.meetings.title': 'Encuentra el mejor momento',
+    'onboarding.meetings.description': 'Usa el buscador de reuniones para encontrar el horario perfecto cuando todos estén disponibles.',
+    'onboarding.shortcuts.title': 'Atajos de teclado',
+    'onboarding.shortcuts.description': 'Usa atajos de teclado para navegar más rápido:',
+    'onboarding.shortcuts.newContact': 'Nuevo contacto',
+    'onboarding.shortcuts.meetingFinder': 'Buscador de reuniones',
+    'onboarding.shortcuts.search': 'Buscar',
+    'onboarding.shortcuts.showAll': 'Ver atajos',
+    'onboarding.ready.title': '¡Todo listo!',
+    'onboarding.ready.description': 'Estás preparado para empezar. Añade tu primer contacto para comenzar.',
+    'onboarding.back': 'Atrás',
+    'onboarding.next': 'Siguiente',
+    'onboarding.skip': 'Omitir',
+    'onboarding.getStarted': 'Empezar'
   },
   en: {
     'app.title': 'WorldTime',
@@ -234,6 +306,9 @@ export const messages = {
     'profile.email': 'Email',
     'profile.defaultTimezone': 'Default Timezone',
     'profile.language': 'Language',
+    'profile.timeFormat': 'Time Format',
+    'profile.timeFormat12h': '12-hour (AM/PM)',
+    'profile.timeFormat24h': '24-hour',
     'profile.saveChanges': 'Save Changes',
     'profile.saving': 'Saving...',
     'profile.dangerZone': 'Danger Zone',
@@ -241,6 +316,75 @@ export const messages = {
     'profile.deleteConfirm': 'Are you sure you want to delete your account? This action cannot be undone.',
     'profile.updateSuccess': 'Profile updated successfully',
     'profile.updateError': 'Failed to update profile',
-    'profile.deleteError': 'Failed to delete account'
+    'profile.deleteError': 'Failed to delete account',
+
+    // Error
+    'error.title': 'Something went wrong',
+    'error.description': 'An unexpected error occurred. Please try again.',
+    'error.retry': 'Try again',
+    'error.goHome': 'Go home',
+
+    // Import/Export
+    'import.title': 'Import contacts',
+    'import.description': 'Import contacts from a CSV or JSON file',
+    'import.selectFile': 'Select file',
+    'import.success': 'Contacts imported successfully',
+    'import.error': 'Failed to import contacts',
+    'export.title': 'Export contacts',
+    'export.description': 'Export your contacts to CSV or JSON',
+    'export.csv': 'Export as CSV',
+    'export.json': 'Export as JSON',
+    'export.success': 'Contacts exported successfully',
+
+    // Working Hours
+    'workingHours.title': 'Working Hours',
+    'workingHours.start': 'Start time',
+    'workingHours.end': 'End time',
+    'workingHours.default': 'Use default (9:00 AM - 5:00 PM)',
+
+    // Meeting Finder
+    'meeting.title': 'Find Best Time',
+    'meeting.description': 'Find the best time to meet with your contacts',
+    'meeting.selectContacts': 'Select contacts',
+    'meeting.duration': 'Duration',
+    'meeting.findTime': 'Find times',
+    'meeting.noOverlap': 'No available times where everyone is within working hours',
+    'meeting.bestTimes': 'Best times',
+
+    // Groups
+    'groups.title': 'Groups',
+    'groups.description': 'Organize your contacts into groups',
+    'groups.add': 'Add',
+    'groups.edit': 'Edit group',
+    'groups.delete': 'Delete group',
+    'groups.newGroupPlaceholder': 'New group name',
+    'groups.changeColor': 'Change color',
+    'groups.empty': 'No groups yet',
+    'groups.contacts': 'contacts',
+    'groups.all': 'All',
+    'groups.ungrouped': 'Ungrouped',
+    'groups.manage': 'Manage groups',
+    'groups.selectGroup': 'Select group (optional)',
+    'groups.noGroup': 'No group',
+
+    // Onboarding
+    'onboarding.welcome.title': 'Welcome to WorldTime',
+    'onboarding.welcome.description': 'Your tool for managing contacts across time zones and coordinating global meetings.',
+    'onboarding.contacts.title': 'Add your contacts',
+    'onboarding.contacts.description': 'Add team members with their time zones to see their local time and availability status.',
+    'onboarding.meetings.title': 'Find the best time',
+    'onboarding.meetings.description': 'Use the meeting finder to discover the perfect time when everyone is available.',
+    'onboarding.shortcuts.title': 'Keyboard shortcuts',
+    'onboarding.shortcuts.description': 'Use keyboard shortcuts for faster navigation:',
+    'onboarding.shortcuts.newContact': 'New contact',
+    'onboarding.shortcuts.meetingFinder': 'Meeting finder',
+    'onboarding.shortcuts.search': 'Search',
+    'onboarding.shortcuts.showAll': 'Show shortcuts',
+    'onboarding.ready.title': 'All set!',
+    'onboarding.ready.description': "You're ready to go. Add your first contact to get started.",
+    'onboarding.back': 'Back',
+    'onboarding.next': 'Next',
+    'onboarding.skip': 'Skip',
+    'onboarding.getStarted': 'Get started'
   }
 };

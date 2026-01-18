@@ -36,6 +36,54 @@
               </button>
             </div>
 
+            <!-- Meeting Finder -->
+            <button
+              @click="showMeetingFinder = true"
+              class="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              :aria-label="$t('meeting.title')"
+              :title="$t('meeting.title')"
+            >
+              <CalendarClock class="w-5 h-5" aria-hidden="true" />
+            </button>
+
+            <!-- Import/Export -->
+            <div class="relative">
+              <button
+                @click="showActionsMenu = !showActionsMenu"
+                class="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                aria-label="More actions"
+              >
+                <MoreVertical class="w-5 h-5" aria-hidden="true" />
+              </button>
+              <div
+                v-if="showActionsMenu"
+                class="absolute right-0 mt-2 w-48 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg shadow-lg z-50"
+              >
+                <button
+                  @click="openImportExport('import')"
+                  class="w-full px-4 py-2 text-left text-[var(--text-primary)] hover:bg-[var(--accent-bg)] flex items-center gap-2"
+                >
+                  <Upload class="w-4 h-4" aria-hidden="true" />
+                  {{ $t('import.title') }}
+                </button>
+                <button
+                  @click="openImportExport('export')"
+                  class="w-full px-4 py-2 text-left text-[var(--text-primary)] hover:bg-[var(--accent-bg)] flex items-center gap-2"
+                >
+                  <Download class="w-4 h-4" aria-hidden="true" />
+                  {{ $t('export.title') }}
+                </button>
+                <hr class="border-[var(--card-border)]" />
+                <button
+                  @click="showGroupManager = true; showActionsMenu = false"
+                  class="w-full px-4 py-2 text-left text-[var(--text-primary)] hover:bg-[var(--accent-bg)] flex items-center gap-2"
+                >
+                  <FolderOpen class="w-4 h-4" aria-hidden="true" />
+                  {{ $t('groups.manage') }}
+                </button>
+              </div>
+            </div>
+
             <ThemeToggle />
             <LanguageSelector />
 
@@ -84,6 +132,7 @@
           <div class="relative flex-1 max-w-md">
             <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-tertiary)]" aria-hidden="true" />
             <input
+              ref="searchInput"
               v-model="searchQuery"
               type="text"
               :placeholder="$t('contacts.search')"
@@ -106,6 +155,40 @@
           >
             <UserPlus class="w-5 h-5" aria-hidden="true" />
             {{ $t('contacts.addNew') }}
+          </button>
+        </div>
+
+        <!-- Group Filter -->
+        <div v-if="groupsStore.groups.length > 0" class="flex flex-wrap gap-2">
+          <button
+            @click="selectedGroupFilter = null"
+            class="px-3 py-1.5 rounded-full text-sm font-medium transition-colors"
+            :class="selectedGroupFilter === null
+              ? 'bg-[var(--accent-primary)] text-white'
+              : 'bg-[var(--card-bg)] text-[var(--text-secondary)] border border-[var(--card-border)] hover:bg-[var(--accent-bg)]'"
+          >
+            {{ $t('groups.all') }}
+          </button>
+          <button
+            v-for="group in groupsStore.groups"
+            :key="group.id"
+            @click="selectedGroupFilter = group.id"
+            class="px-3 py-1.5 rounded-full text-sm font-medium transition-colors flex items-center gap-1.5"
+            :class="selectedGroupFilter === group.id
+              ? 'bg-[var(--accent-primary)] text-white'
+              : 'bg-[var(--card-bg)] text-[var(--text-secondary)] border border-[var(--card-border)] hover:bg-[var(--accent-bg)]'"
+          >
+            <span class="w-2 h-2 rounded-full" :style="{ backgroundColor: group.color || '#3B82F6' }" />
+            {{ group.name }}
+          </button>
+          <button
+            @click="selectedGroupFilter = 'ungrouped'"
+            class="px-3 py-1.5 rounded-full text-sm font-medium transition-colors"
+            :class="selectedGroupFilter === 'ungrouped'
+              ? 'bg-[var(--accent-primary)] text-white'
+              : 'bg-[var(--card-bg)] text-[var(--text-secondary)] border border-[var(--card-border)] hover:bg-[var(--accent-bg)]'"
+          >
+            {{ $t('groups.ungrouped') }}
           </button>
         </div>
 
@@ -198,19 +281,58 @@
       @close="handleCloseModal"
       @submit="handleSubmitContact"
     />
+
+    <!-- Meeting Finder Modal -->
+    <MeetingFinder
+      v-if="showMeetingFinder"
+      :contacts="contactsStore.contacts"
+      @close="showMeetingFinder = false"
+    />
+
+    <!-- Import/Export Modal -->
+    <ImportExportModal
+      v-if="showImportExport"
+      :mode="importExportMode"
+      @close="showImportExport = false"
+      @imported="contactsStore.fetchContacts()"
+    />
+
+    <!-- Keyboard Shortcuts Modal -->
+    <KeyboardShortcutsModal
+      :show="showShortcutsModal"
+      :shortcuts="shortcuts"
+      @close="showShortcutsModal = false"
+    />
+
+    <!-- Group Manager Modal -->
+    <GroupManager
+      v-if="showGroupManager"
+      @close="showGroupManager = false"
+    />
+
+    <!-- Onboarding Flow -->
+    <OnboardingFlow
+      v-if="showOnboarding"
+      @complete="handleOnboardingComplete"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { Users, Clock, List, Menu, UserCircle, LogOut, UserPlus, Loader2, Search, X } from 'lucide-vue-next';
+import {
+  Users, Clock, List, Menu, UserCircle, LogOut, UserPlus,
+  Loader2, Search, X, CalendarClock, MoreVertical, Upload, Download, FolderOpen
+} from 'lucide-vue-next';
 import type { Contact } from '@/types';
 import { TimeService } from '@/services/TimeService';
 import { useAuthStore } from '@/stores/auth';
 import { useContactsStore } from '@/stores/contacts';
 import { useNotificationStore } from '@/stores/notifications';
+import { useGroupsStore } from '@/stores/groups';
+import { useKeyboardShortcuts } from '@/composables/useKeyboardShortcuts';
 import Timeline from '@/components/Timeline.vue';
 import TimeCard from '@/components/TimeCard.vue';
 import ContactCard from '@/components/ContactCard.vue';
@@ -218,13 +340,20 @@ import ContactModal from '@/components/ContactModal.vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import LanguageSelector from '@/components/LanguageSelector.vue';
 import MobileDrawer from '@/components/MobileDrawer.vue';
+import MeetingFinder from '@/components/MeetingFinder.vue';
+import ImportExportModal from '@/components/ImportExportModal.vue';
+import KeyboardShortcutsModal from '@/components/KeyboardShortcutsModal.vue';
+import GroupManager from '@/components/GroupManager.vue';
+import OnboardingFlow from '@/components/OnboardingFlow.vue';
 
 const { t } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
 const contactsStore = useContactsStore();
 const notificationStore = useNotificationStore();
+const groupsStore = useGroupsStore();
 const timeService = new TimeService();
+const { shortcuts, showShortcutsModal } = useKeyboardShortcuts();
 
 const view = ref<'timeline' | 'list'>('timeline');
 const selectedDate = ref(new Date());
@@ -232,28 +361,134 @@ const showMobileMenu = ref(false);
 const showContactModal = ref(false);
 const selectedContact = ref<Contact | null>(null);
 const searchQuery = ref('');
+const showMeetingFinder = ref(false);
+const showImportExport = ref(false);
+const importExportMode = ref<'import' | 'export'>('export');
+const showActionsMenu = ref(false);
+const searchInput = ref<HTMLInputElement | null>(null);
+const showGroupManager = ref(false);
+const selectedGroupFilter = ref<string | null>(null);
+const showOnboarding = ref(false);
 
-// Filter contacts based on search query
+// Check if onboarding should be shown
+function checkOnboarding() {
+  try {
+    const completed = localStorage.getItem('onboardingCompleted');
+    if (!completed) {
+      showOnboarding.value = true;
+    }
+  } catch {
+    // Ignore localStorage errors
+  }
+}
+
+function handleOnboardingComplete() {
+  showOnboarding.value = false;
+}
+
+// Filter contacts based on search query and group filter
 const filteredContacts = computed(() => {
-  if (!searchQuery.value.trim()) {
-    return contactsStore.contacts;
+  let contacts = contactsStore.contacts;
+
+  // Apply group filter
+  if (selectedGroupFilter.value !== null) {
+    if (selectedGroupFilter.value === 'ungrouped') {
+      contacts = contacts.filter((c) => !c.group_id);
+    } else {
+      contacts = contacts.filter((c) => c.group_id === selectedGroupFilter.value);
+    }
   }
 
-  const query = searchQuery.value.toLowerCase().trim();
-  return contactsStore.contacts.filter((contact) => {
-    return (
-      contact.name.toLowerCase().includes(query) ||
-      contact.email.toLowerCase().includes(query) ||
-      contact.timezone.toLowerCase().includes(query) ||
-      (contact.location && contact.location.toLowerCase().includes(query)) ||
-      (contact.phone && contact.phone.includes(query))
-    );
-  });
+  // Apply search filter
+  if (searchQuery.value.trim()) {
+    const query = searchQuery.value.toLowerCase().trim();
+    contacts = contacts.filter((contact) => {
+      return (
+        contact.name.toLowerCase().includes(query) ||
+        contact.email.toLowerCase().includes(query) ||
+        contact.timezone.toLowerCase().includes(query) ||
+        (contact.location && contact.location.toLowerCase().includes(query)) ||
+        (contact.phone && contact.phone.includes(query))
+      );
+    });
+  }
+
+  return contacts;
 });
 
+// Keyboard shortcut handlers
+function handleShortcutNewContact() {
+  showContactModal.value = true;
+}
+
+function handleShortcutMeetingFinder() {
+  showMeetingFinder.value = true;
+}
+
+function handleShortcutExport() {
+  openImportExport('export');
+}
+
+function handleShortcutImport() {
+  openImportExport('import');
+}
+
+function handleShortcutView(event: CustomEvent) {
+  view.value = event.detail;
+}
+
+function handleShortcutEscape() {
+  if (showContactModal.value) {
+    handleCloseModal();
+  } else if (showMeetingFinder.value) {
+    showMeetingFinder.value = false;
+  } else if (showImportExport.value) {
+    showImportExport.value = false;
+  } else if (showShortcutsModal.value) {
+    showShortcutsModal.value = false;
+  } else if (searchQuery.value) {
+    searchQuery.value = '';
+  }
+}
+
 onMounted(async () => {
-  await contactsStore.fetchContacts();
+  checkOnboarding();
+  await Promise.all([contactsStore.fetchContacts(), groupsStore.fetchGroups()]);
+
+  // Listen for keyboard shortcut events
+  document.addEventListener('shortcut:new-contact', handleShortcutNewContact);
+  document.addEventListener('shortcut:meeting-finder', handleShortcutMeetingFinder);
+  document.addEventListener('shortcut:export', handleShortcutExport);
+  document.addEventListener('shortcut:import', handleShortcutImport);
+  document.addEventListener('shortcut:view', handleShortcutView as EventListener);
+  document.addEventListener('shortcut:escape', handleShortcutEscape);
+
+  // Close actions menu on click outside
+  document.addEventListener('click', handleClickOutside);
 });
+
+onUnmounted(() => {
+  document.removeEventListener('shortcut:new-contact', handleShortcutNewContact);
+  document.removeEventListener('shortcut:meeting-finder', handleShortcutMeetingFinder);
+  document.removeEventListener('shortcut:export', handleShortcutExport);
+  document.removeEventListener('shortcut:import', handleShortcutImport);
+  document.removeEventListener('shortcut:view', handleShortcutView as EventListener);
+  document.removeEventListener('shortcut:escape', handleShortcutEscape);
+  document.removeEventListener('click', handleClickOutside);
+});
+
+function handleClickOutside(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+  if (!target.closest('[aria-label="More actions"]')) {
+    showActionsMenu.value = false;
+  }
+}
+
+function openImportExport(mode: 'import' | 'export') {
+  importExportMode.value = mode;
+  showImportExport.value = true;
+  showActionsMenu.value = false;
+}
 
 function handleTimeUpdate(date: Date) {
   selectedDate.value = date;
