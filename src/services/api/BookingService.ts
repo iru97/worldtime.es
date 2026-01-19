@@ -194,9 +194,9 @@ export class BookingService extends BaseApiService {
         }
       }
 
-      // TODO: Fetch busy times from connected calendar
-      // const calendarBusy = await this.getCalendarBusyTimes(bookingLink.user_id, startDate, endDate);
-      // busySlots.push(...calendarBusy);
+      // Fetch busy times from connected calendar
+      const calendarBusy = await this.getCalendarBusyTimes(bookingLink.user_id, startDate, endDate);
+      busySlots.push(...calendarBusy);
 
       // Generate available slots based on availability schedule
       const availableSlots = this.generateAvailableSlots(
@@ -528,6 +528,129 @@ export class BookingService extends BaseApiService {
           message: error.message,
         },
       };
+    }
+  }
+
+  // ============================================
+  // CALENDAR INTEGRATION
+  // ============================================
+
+  /**
+   * Get busy times from connected calendar for a specific user
+   */
+  private async getCalendarBusyTimes(
+    userId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<FreeBusySlot[]> {
+    try {
+      // Get user's calendar connection
+      const { data: connection, error: connError } = await supabase
+        .from('calendar_connections')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('provider', 'google')
+        .eq('sync_enabled', true)
+        .single();
+
+      if (connError || !connection) {
+        // No calendar connected, return empty
+        return [];
+      }
+
+      // Check if token needs refresh
+      const expiresAt = new Date(connection.token_expires_at || 0);
+      let accessToken = connection.access_token;
+
+      if (expiresAt.getTime() - Date.now() < 5 * 60 * 1000 && connection.refresh_token) {
+        // Token expires soon, refresh it
+        const refreshResult = await this.refreshGoogleToken(connection.refresh_token);
+        if (refreshResult.success && refreshResult.token) {
+          accessToken = refreshResult.token;
+          // Update stored token
+          await supabase
+            .from('calendar_connections')
+            .update({
+              access_token: refreshResult.token,
+              token_expires_at: new Date(Date.now() + 3600 * 1000).toISOString(),
+            })
+            .eq('id', connection.id);
+        }
+      }
+
+      // Fetch free/busy from Google Calendar
+      const response = await fetch('https://www.googleapis.com/calendar/v3/freeBusy', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          timeMin: startDate.toISOString(),
+          timeMax: endDate.toISOString(),
+          items: [{ id: connection.calendar_id || 'primary' }],
+        }),
+      });
+
+      if (!response.ok) {
+        logger.error('Failed to fetch Google Calendar busy times:', await response.text());
+        return [];
+      }
+
+      const data = await response.json();
+      const busySlots: FreeBusySlot[] = [];
+
+      // Extract busy times from response
+      const calendarId = connection.calendar_id || 'primary';
+      const calendarData = data.calendars?.[calendarId];
+
+      if (calendarData?.busy) {
+        for (const slot of calendarData.busy) {
+          busySlots.push({
+            start: slot.start,
+            end: slot.end,
+            status: 'busy',
+          });
+        }
+      }
+
+      return busySlots;
+    } catch (err) {
+      const error = err as Error;
+      logger.error('Error fetching calendar busy times:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Refresh Google OAuth token
+   */
+  private async refreshGoogleToken(
+    refreshToken: string
+  ): Promise<{ success: boolean; token?: string }> {
+    try {
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+      const clientSecret = import.meta.env.VITE_GOOGLE_CLIENT_SECRET || '';
+
+      const response = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          client_id: clientId,
+          client_secret: clientSecret,
+          refresh_token: refreshToken,
+          grant_type: 'refresh_token',
+        }),
+      });
+
+      if (!response.ok) {
+        return { success: false };
+      }
+
+      const tokens = await response.json();
+      return { success: true, token: tokens.access_token };
+    } catch {
+      return { success: false };
     }
   }
 }

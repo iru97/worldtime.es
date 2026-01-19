@@ -36,6 +36,26 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/teams',
+      component: () => import('@/views/TeamsView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/events',
+      component: () => import('@/views/EventsView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/availability',
+      component: () => import('@/views/AvailabilityView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/settings',
+      component: () => import('@/views/SettingsView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/book/:userId/:slug',
       component: () => import('@/views/PublicBookingView.vue'),
       meta: { requiresGuest: false },
