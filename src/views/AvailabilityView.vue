@@ -284,10 +284,14 @@
     <div
       v-if="showCreateModal"
       class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="create-schedule-title"
       @click.self="showCreateModal = false"
+      @keydown.escape="showCreateModal = false"
     >
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md p-6">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">
+        <h2 id="create-schedule-title" class="text-xl font-bold text-gray-900 dark:text-white mb-6">
           {{ t('availability.createSchedule') }}
         </h2>
         <form @submit.prevent="handleCreateSchedule">
@@ -353,10 +357,14 @@
     <div
       v-if="showOverrideModal"
       class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="add-override-title"
       @click.self="showOverrideModal = false"
+      @keydown.escape="showOverrideModal = false"
     >
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md p-6">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">
+        <h2 id="add-override-title" class="text-xl font-bold text-gray-900 dark:text-white mb-6">
           {{ t('availability.addDateOverride') }}
         </h2>
         <form @submit.prevent="handleAddOverride">

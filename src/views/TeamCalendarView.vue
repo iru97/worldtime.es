@@ -94,82 +94,84 @@
       </div>
 
       <!-- Timeline Grid -->
-      <div class="card overflow-hidden">
-        <!-- Hour Headers -->
-        <div class="grid border-b border-[var(--card-border)]" :style="{ gridTemplateColumns: `180px repeat(24, minmax(50px, 1fr))` }">
-          <div class="p-3 bg-[var(--accent-bg)] font-medium text-[var(--text-secondary)] text-sm">
-            {{ $t('teamCalendar.contact') }}
-          </div>
-          <div
-            v-for="hour in 24"
-            :key="hour"
-            class="p-2 text-center text-xs font-medium border-l border-[var(--card-border)]"
-            :class="isCurrentHour(hour - 1) ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600' : 'text-[var(--text-tertiary)]'"
-          >
-            {{ formatHour(hour - 1) }}
-          </div>
-        </div>
-
-        <!-- Contact Rows -->
-        <div
-          v-for="contact in selectedContacts"
-          :key="contact.id"
-          class="grid border-b border-[var(--card-border)] last:border-b-0"
-          :style="{ gridTemplateColumns: `180px repeat(24, minmax(50px, 1fr))` }"
-        >
-          <!-- Contact Info -->
-          <div class="p-3 flex items-center gap-2 bg-[var(--accent-bg)]">
-            <div class="flex-1 min-w-0">
-              <p class="font-medium text-[var(--text-primary)] truncate">{{ contact.name }}</p>
-              <p class="text-xs text-[var(--text-tertiary)] truncate">
-                {{ getCurrentTime(contact.timezone) }} • {{ getTimezoneAbbr(contact.timezone) }}
-              </p>
+      <div class="card overflow-x-auto">
+        <div class="min-w-[1200px]">
+          <!-- Hour Headers -->
+          <div class="grid border-b border-[var(--card-border)]" :style="{ gridTemplateColumns: `180px repeat(24, minmax(40px, 1fr))` }">
+            <div class="p-3 bg-[var(--accent-bg)] font-medium text-[var(--text-secondary)] text-sm sticky left-0 z-10">
+              {{ $t('teamCalendar.contact') }}
+            </div>
+            <div
+              v-for="hour in 24"
+              :key="hour"
+              class="p-2 text-center text-xs font-medium border-l border-[var(--card-border)]"
+              :class="isCurrentHour(hour - 1) ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600' : 'text-[var(--text-tertiary)]'"
+            >
+              {{ formatHour(hour - 1) }}
             </div>
           </div>
 
-          <!-- Hour Cells -->
+          <!-- Contact Rows -->
           <div
-            v-for="hour in 24"
-            :key="hour"
-            class="h-14 border-l border-[var(--card-border)] relative"
-            :class="getHourCellClass(contact, hour - 1)"
-            :title="getHourTooltip(contact, hour - 1)"
+            v-for="contact in selectedContacts"
+            :key="contact.id"
+            class="grid border-b border-[var(--card-border)] last:border-b-0"
+            :style="{ gridTemplateColumns: `180px repeat(24, minmax(40px, 1fr))` }"
           >
-            <!-- Current time indicator -->
-            <div
-              v-if="isCurrentHour(hour - 1) && isToday"
-              class="absolute top-0 bottom-0 w-0.5 bg-blue-500"
-              :style="{ left: `${currentMinutePercentage}%` }"
-            />
-          </div>
-        </div>
+            <!-- Contact Info -->
+            <div class="p-3 flex items-center gap-2 bg-[var(--accent-bg)] sticky left-0 z-10">
+              <div class="flex-1 min-w-0">
+                <p class="font-medium text-[var(--text-primary)] truncate">{{ contact.name }}</p>
+                <p class="text-xs text-[var(--text-tertiary)] truncate">
+                  {{ getCurrentTime(contact.timezone) }} • {{ getTimezoneAbbr(contact.timezone) }}
+                </p>
+              </div>
+            </div>
 
-        <!-- User's Own Row -->
-        <div
-          v-if="userTimezone"
-          class="grid border-t-2 border-[var(--accent-primary)]"
-          :style="{ gridTemplateColumns: `180px repeat(24, minmax(50px, 1fr))` }"
-        >
-          <div class="p-3 flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20">
-            <div class="flex-1 min-w-0">
-              <p class="font-medium text-[var(--accent-primary)]">{{ $t('teamCalendar.you') }}</p>
-              <p class="text-xs text-[var(--text-tertiary)] truncate">
-                {{ getCurrentTime(userTimezone) }} • {{ getTimezoneAbbr(userTimezone) }}
-              </p>
+            <!-- Hour Cells -->
+            <div
+              v-for="hour in 24"
+              :key="hour"
+              class="h-14 border-l border-[var(--card-border)] relative"
+              :class="getHourCellClass(contact, hour - 1)"
+              :title="getHourTooltip(contact, hour - 1)"
+            >
+              <!-- Current time indicator -->
+              <div
+                v-if="isCurrentHour(hour - 1) && isToday"
+                class="absolute top-0 bottom-0 w-0.5 bg-blue-500"
+                :style="{ left: `${currentMinutePercentage}%` }"
+              />
             </div>
           </div>
 
+          <!-- User's Own Row -->
           <div
-            v-for="hour in 24"
-            :key="hour"
-            class="h-14 border-l border-[var(--card-border)] relative"
-            :class="getUserHourCellClass(hour - 1)"
+            v-if="userTimezone"
+            class="grid border-t-2 border-[var(--accent-primary)]"
+            :style="{ gridTemplateColumns: `180px repeat(24, minmax(40px, 1fr))` }"
           >
+            <div class="p-3 flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 sticky left-0 z-10">
+              <div class="flex-1 min-w-0">
+                <p class="font-medium text-[var(--accent-primary)]">{{ $t('teamCalendar.you') }}</p>
+                <p class="text-xs text-[var(--text-tertiary)] truncate">
+                  {{ getCurrentTime(userTimezone) }} • {{ getTimezoneAbbr(userTimezone) }}
+                </p>
+              </div>
+            </div>
+
             <div
-              v-if="isCurrentHour(hour - 1) && isToday"
-              class="absolute top-0 bottom-0 w-0.5 bg-blue-500"
-              :style="{ left: `${currentMinutePercentage}%` }"
-            />
+              v-for="hour in 24"
+              :key="hour"
+              class="h-14 border-l border-[var(--card-border)] relative"
+              :class="getUserHourCellClass(hour - 1)"
+            >
+              <div
+                v-if="isCurrentHour(hour - 1) && isToday"
+                class="absolute top-0 bottom-0 w-0.5 bg-blue-500"
+                :style="{ left: `${currentMinutePercentage}%` }"
+              />
+            </div>
           </div>
         </div>
       </div>

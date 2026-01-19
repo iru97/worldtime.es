@@ -138,7 +138,7 @@
             </div>
 
             <!-- Team Stats -->
-            <div class="grid grid-cols-3 gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
               <div class="text-center">
                 <p class="text-2xl font-bold text-gray-900 dark:text-white">
                   {{ members.length }}
@@ -270,10 +270,14 @@
     <div
       v-if="showCreateModal"
       class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="create-team-title"
       @click.self="showCreateModal = false"
+      @keydown.escape="showCreateModal = false"
     >
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md p-6">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">
+        <h2 id="create-team-title" class="text-xl font-bold text-gray-900 dark:text-white mb-6">
           {{ t('teams.createTeam') }}
         </h2>
         <form @submit.prevent="handleCreateTeam">
@@ -326,10 +330,14 @@
     <div
       v-if="showInviteModal"
       class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="invite-member-title"
       @click.self="showInviteModal = false"
+      @keydown.escape="showInviteModal = false"
     >
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md p-6">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">
+        <h2 id="invite-member-title" class="text-xl font-bold text-gray-900 dark:text-white mb-6">
           {{ t('teams.inviteMember') }}
         </h2>
         <form @submit.prevent="handleInviteMember">

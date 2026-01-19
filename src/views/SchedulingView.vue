@@ -75,12 +75,12 @@
       </div>
 
       <!-- Tabs -->
-      <div class="flex border-b border-[var(--card-border)] mb-6">
+      <div class="flex border-b border-[var(--card-border)] mb-6 overflow-x-auto">
         <button
           v-for="tab in tabs"
           :key="tab.id"
           @click="activeTab = tab.id"
-          class="px-6 py-3 font-medium transition-colors relative"
+          class="px-4 sm:px-6 py-3 font-medium transition-colors relative whitespace-nowrap"
           :class="
             activeTab === tab.id
               ? 'text-[var(--accent-primary)]'

@@ -85,7 +85,8 @@
       </div>
 
       <!-- Calendar View -->
-      <div v-else-if="currentView === 'calendar'" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+      <div v-else-if="currentView === 'calendar'" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-x-auto">
+        <div class="min-w-[700px]">
         <!-- Week Header -->
         <div class="grid grid-cols-7 border-b border-gray-200 dark:border-gray-700">
           <div
@@ -129,6 +130,7 @@
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
 
@@ -243,10 +245,14 @@
     <div
       v-if="showCreateModal || showEditModal"
       class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+      role="dialog"
+      aria-modal="true"
+      :aria-labelledby="showEditModal ? 'edit-event-title' : 'create-event-title'"
       @click.self="closeModals"
+      @keydown.escape="closeModals"
     >
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">
+        <h2 :id="showEditModal ? 'edit-event-title' : 'create-event-title'" class="text-xl font-bold text-gray-900 dark:text-white mb-6">
           {{ showEditModal ? t('events.editEvent') : t('events.createEvent') }}
         </h2>
         <form @submit.prevent="handleSaveEvent">
