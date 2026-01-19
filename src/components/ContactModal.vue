@@ -131,6 +131,71 @@
           ></textarea>
         </div>
 
+        <!-- Group Selection -->
+        <div v-if="groupsStore.groups.length > 0">
+          <label for="group" class="block text-sm font-medium text-[var(--text-secondary)] mb-1">
+            {{ $t('groups.selectGroup') }}
+          </label>
+          <div class="relative">
+            <FolderOpen class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-tertiary)]" aria-hidden="true" />
+            <select
+              id="group"
+              v-model="form.group_id"
+              class="input pl-10"
+            >
+              <option value="">{{ $t('groups.noGroup') }}</option>
+              <option v-for="group in groupsStore.groups" :key="group.id" :value="group.id">
+                {{ group.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Working Hours -->
+        <div>
+          <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+            {{ $t('workingHours.title') }}
+          </label>
+          <label class="flex items-center gap-2 mb-3">
+            <input
+              type="checkbox"
+              v-model="useDefaultHours"
+              class="w-4 h-4 text-[var(--accent-primary)] rounded border-[var(--card-border)]"
+            />
+            <span class="text-sm text-[var(--text-secondary)]">{{ $t('workingHours.default') }}</span>
+          </label>
+          <div v-if="!useDefaultHours" class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="working-start" class="block text-xs text-[var(--text-tertiary)] mb-1">
+                {{ $t('workingHours.start') }}
+              </label>
+              <select
+                id="working-start"
+                v-model="form.working_hours_start"
+                class="input"
+              >
+                <option v-for="hour in 24" :key="hour - 1" :value="hour - 1">
+                  {{ (hour - 1).toString().padStart(2, '0') }}:00
+                </option>
+              </select>
+            </div>
+            <div>
+              <label for="working-end" class="block text-xs text-[var(--text-tertiary)] mb-1">
+                {{ $t('workingHours.end') }}
+              </label>
+              <select
+                id="working-end"
+                v-model="form.working_hours_end"
+                class="input"
+              >
+                <option v-for="hour in 24" :key="hour - 1" :value="hour - 1">
+                  {{ (hour - 1).toString().padStart(2, '0') }}:00
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div class="flex justify-end gap-3">
           <button
             type="button"
@@ -153,9 +218,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, onUnmounted } from 'vue';
-import { X, ChevronDown, Clock } from 'lucide-vue-next';
+import { X, ChevronDown, Clock, FolderOpen } from 'lucide-vue-next';
 import type { Contact } from '@/types';
 import { TimeService } from '@/services/TimeService';
+import { useGroupsStore } from '@/stores/groups';
 
 const props = defineProps<{
   contact?: Contact;
@@ -167,9 +233,14 @@ const emit = defineEmits<{
 }>();
 
 const timeService = new TimeService();
+const groupsStore = useGroupsStore();
 const timezones = ref<string[]>([]);
 const searchQuery = ref('');
 const showDropdown = ref(false);
+
+const useDefaultHours = ref(
+  props.contact?.working_hours_start === undefined && props.contact?.working_hours_end === undefined
+);
 
 const form = ref({
   name: props.contact?.name || '',
@@ -178,6 +249,9 @@ const form = ref({
   timezone: props.contact?.timezone || '',
   location: props.contact?.location || '',
   notes: props.contact?.notes || '',
+  working_hours_start: props.contact?.working_hours_start ?? 9,
+  working_hours_end: props.contact?.working_hours_end ?? 17,
+  group_id: props.contact?.group_id || '',
 });
 
 // Update search query when timezone is selected
@@ -229,16 +303,32 @@ function handleClickOutside(event: MouseEvent) {
 }
 
 function handleSubmit() {
-  emit('submit', {
+  const contactData: Partial<Contact> = {
     ...form.value,
     id: props.contact?.id,
     user_id: props.contact?.user_id,
-  });
+  };
+
+  // Only include working hours if not using default
+  if (useDefaultHours.value) {
+    delete contactData.working_hours_start;
+    delete contactData.working_hours_end;
+  }
+
+  // Handle empty group_id
+  if (!contactData.group_id) {
+    contactData.group_id = undefined;
+  }
+
+  emit('submit', contactData);
 }
 
 onMounted(() => {
   timezones.value = timeService.getTimezones();
   document.addEventListener('click', handleClickOutside);
+  if (groupsStore.groups.length === 0) {
+    groupsStore.fetchGroups();
+  }
 });
 
 onUnmounted(() => {

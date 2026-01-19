@@ -36,7 +36,7 @@
               :key="zone" 
               :value="zone"
             >
-              {{ formatTimezoneName(zone) }} ({{ getCurrentTime(zone) }})
+              {{ formatTimezone(zone) }} ({{ getCurrentTime(zone) }})
             </option>
           </optgroup>
         </select>
@@ -60,6 +60,7 @@ import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Plus } from 'lucide-vue-next';
 import { TimeService } from '@/services/TimeService';
+import { formatTimezone, getCurrentTime } from '@/utils/timezone';
 
 const { t } = useI18n();
 const timeService = new TimeService();
@@ -80,19 +81,6 @@ const groupedTimezones = computed(() => {
     return groups;
   }, {} as Record<string, string[]>);
 });
-
-function formatTimezoneName(timezone: string): string {
-  return timezone.split('/')[1].replace(/_/g, ' ');
-}
-
-function getCurrentTime(timezone: string): string {
-  return new Date().toLocaleTimeString('en-US', {
-    timeZone: timezone,
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  });
-}
 
 function handleSubmit() {
   if (!form.value.name || !form.value.timezone) return;
