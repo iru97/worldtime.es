@@ -1,58 +1,58 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-    <header class="bg-white shadow-sm">
+  <div class="min-h-screen bg-[var(--bg-primary)]">
+    <header class="bg-[var(--card-bg)] shadow-sm border-b border-[var(--card-border)]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-4">
           <div class="flex items-center gap-3">
-            <UserCircle class="w-8 h-8 text-indigo-600" />
-            <h1 class="text-2xl font-bold text-gray-800">Profile Settings</h1>
+            <UserCircle class="w-8 h-8 text-[var(--accent-primary)]" />
+            <h1 class="text-2xl font-bold text-[var(--text-primary)]">{{ $t('profile.title') }}</h1>
           </div>
           <RouterLink
-            to="/"
-            class="text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2"
+            to="/home"
+            class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-2"
           >
             <ArrowLeft class="w-5 h-5" />
-            Back to Contacts
+            {{ $t('profile.backToContacts') }}
           </RouterLink>
         </div>
       </div>
     </header>
 
     <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div v-if="successMessage" class="mb-6 bg-green-50 text-green-700 p-4 rounded-lg flex items-center gap-2">
+      <div v-if="successMessage" class="mb-6 bg-[var(--accent-bg)] text-[var(--accent-text)] p-4 rounded-lg flex items-center gap-2">
         <CheckCircle class="w-5 h-5" />
         {{ successMessage }}
       </div>
 
-      <div v-if="errorMessage" class="mb-6 bg-red-50 text-red-700 p-4 rounded-lg flex items-center gap-2">
+      <div v-if="errorMessage" class="mb-6 bg-[var(--danger-bg)] text-[var(--danger)] p-4 rounded-lg flex items-center gap-2">
         <AlertCircle class="w-5 h-5" />
         {{ errorMessage }}
       </div>
 
-      <div class="bg-white rounded-xl shadow-lg p-6">
+      <div class="card p-6">
         <form @submit.prevent="handleSubmit" class="space-y-6">
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
-              Email
+            <label for="email" class="block text-sm font-medium text-[var(--text-primary)] mb-1">
+              {{ $t('profile.email') }}
             </label>
             <input
               id="email"
               type="email"
               :value="authStore.user?.email"
               disabled
-              class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-500"
+              class="w-full px-4 py-2 bg-[var(--bg-secondary)] border border-[var(--card-border)] rounded-lg text-[var(--text-tertiary)]"
             />
           </div>
 
           <div>
-            <label for="timezone" class="block text-sm font-medium text-gray-700 mb-1">
-              Default Timezone
+            <label for="timezone" class="block text-sm font-medium text-[var(--text-primary)] mb-1">
+              {{ $t('profile.defaultTimezone') }}
             </label>
             <select
               id="timezone"
               v-model="form.timezone"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              class="w-full px-4 py-2 border border-[var(--card-border)] rounded-lg focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent bg-[var(--card-bg)] text-[var(--text-primary)]"
             >
               <option v-for="tz in timezones" :key="tz" :value="tz">
                 {{ tz }}
@@ -61,14 +61,14 @@
           </div>
 
           <div>
-            <label for="language" class="block text-sm font-medium text-gray-700 mb-1">
-              Language
+            <label for="language" class="block text-sm font-medium text-[var(--text-primary)] mb-1">
+              {{ $t('profile.language') }}
             </label>
             <select
               id="language"
               v-model="form.language"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              class="w-full px-4 py-2 border border-[var(--card-border)] rounded-lg focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent bg-[var(--card-bg)] text-[var(--text-primary)]"
             >
               <option value="en">English</option>
               <option value="es">Español</option>
@@ -79,24 +79,24 @@
             <button
               type="submit"
               :disabled="loading"
-              class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              class="w-full bg-[var(--accent-primary)] text-white py-2 px-4 rounded-lg hover:bg-[var(--accent-hover)] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
               <Loader2 v-if="loading" class="w-5 h-5 animate-spin" />
-              <span>{{ loading ? 'Saving...' : 'Save Changes' }}</span>
+              <span>{{ loading ? $t('profile.saving') : $t('profile.saveChanges') }}</span>
             </button>
           </div>
         </form>
       </div>
 
-      <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
-        <h2 class="text-lg font-medium text-gray-900 mb-4">Danger Zone</h2>
+      <div class="mt-8 card p-6">
+        <h2 class="text-lg font-medium text-[var(--text-primary)] mb-4">{{ $t('profile.dangerZone') }}</h2>
         <button
           @click="handleDeleteAccount"
           :disabled="loading"
-          class="w-full bg-red-50 text-red-600 py-2 px-4 rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+          class="w-full bg-[var(--danger-bg)] text-[var(--danger)] py-2 px-4 rounded-lg hover:opacity-80 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
         >
           <Trash2 class="w-5 h-5" />
-          Delete Account
+          {{ $t('profile.deleteAccount') }}
         </button>
       </div>
     </main>
@@ -106,9 +106,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { UserCircle, ArrowLeft, Loader2, Trash2, CheckCircle, AlertCircle } from 'lucide-vue-next';
 import { useAuthStore } from '@/stores/auth';
 
+const { t } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
 const loading = ref(false);
@@ -127,7 +129,7 @@ onMounted(() => {
 
 async function handleSubmit() {
   if (!authStore.user) return;
-  
+
   loading.value = true;
   errorMessage.value = '';
   successMessage.value = '';
@@ -139,17 +141,17 @@ async function handleSubmit() {
     });
 
     if (!success) throw error;
-    successMessage.value = 'Profile updated successfully';
+    successMessage.value = t('profile.updateSuccess');
   } catch (error) {
     console.error('Error updating profile:', error);
-    errorMessage.value = 'Failed to update profile';
+    errorMessage.value = t('profile.updateError');
   } finally {
     loading.value = false;
   }
 }
 
 async function handleDeleteAccount() {
-  if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+  if (!confirm(t('profile.deleteConfirm'))) {
     return;
   }
 
@@ -162,7 +164,7 @@ async function handleDeleteAccount() {
     router.push('/login');
   } catch (error) {
     console.error('Error deleting account:', error);
-    errorMessage.value = 'Failed to delete account';
+    errorMessage.value = t('profile.deleteError');
     loading.value = false;
   }
 }

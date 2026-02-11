@@ -3,7 +3,16 @@
     <!-- Header with name and actions -->
     <div class="p-6 flex justify-between items-start border-b border-[var(--card-border)]">
       <div>
-        <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-1">{{ contact.name }}</h3>
+        <div class="flex items-center gap-2 mb-1">
+          <h3 class="text-xl font-semibold text-[var(--text-primary)]">{{ contact.name }}</h3>
+          <span
+            v-if="contactGroup"
+            class="px-2 py-0.5 text-xs font-medium rounded-full text-white"
+            :style="{ backgroundColor: contactGroup.color || '#3B82F6' }"
+          >
+            {{ contactGroup.name }}
+          </span>
+        </div>
         <p class="text-sm text-[var(--text-secondary)]">
           {{ contact.location || $t('contacts.noLocation') }}
         </p>
@@ -13,15 +22,17 @@
           @click="emit('edit', contact)"
           class="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-lg"
           :title="$t('person.edit')"
+          :aria-label="$t('person.edit')"
         >
-          <Edit class="w-5 h-5" />
+          <Edit class="w-5 h-5" aria-hidden="true" />
         </button>
         <button
           @click="emit('delete', contact.id)"
           class="p-2 text-[var(--text-secondary)] hover:text-[var(--danger)] transition-colors rounded-lg"
           :title="$t('person.delete')"
+          :aria-label="$t('person.delete')"
         >
-          <Trash2 class="w-5 h-5" />
+          <Trash2 class="w-5 h-5" aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -111,9 +122,11 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { Edit, Trash2, Mail, Phone, Clock, Timer, Globe2 } from 'lucide-vue-next';
 import type { Contact } from '@/types';
 import { useContactAvailability } from '@/composables/useContactAvailability';
+import { useGroupsStore } from '@/stores/groups';
 
 const props = defineProps<{
   contact: Contact;
@@ -124,5 +137,11 @@ const emit = defineEmits<{
   (e: 'delete', id: string): void;
 }>();
 
+const groupsStore = useGroupsStore();
 const availability = useContactAvailability(props.contact.timezone);
+
+const contactGroup = computed(() => {
+  if (!props.contact.group_id) return null;
+  return groupsStore.getGroupById(props.contact.group_id);
+});
 </script>
